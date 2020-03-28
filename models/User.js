@@ -1,7 +1,10 @@
-const mongoose = require("mongoose");
-const uniqueValidator = require("mongoose-unique-validator");
+const mongoose = require("mongoose"),
+  bcrypt = require("bcrypt"),
+  uniqueValidator = require("mongoose-unique-validator");
 
-const UserSchema = new mongoose.Schema(
+const saltWorkFactor = 10;
+
+const schema = new mongoose.Schema(
   {
     username: {
       type: String,
@@ -18,14 +21,40 @@ const UserSchema = new mongoose.Schema(
       index: true
     },
     password: {
-      type: String
+      type: String,
+      required: [true, "Cannot be blank"]
     }
   },
   {timestamps: true}
 );
 
-UserSchema.plugin(uniqueValidator, {
+schema.plugin(uniqueValidator, {
   message: "Is already taken."
 });
 
-module.exports = mongoose.model("User", UserSchema);
+schema.pre("save", function(next) {
+  if (!this.isModified("password")) return next();
+
+  bcrypt.genSalt(saltWorkFactor, (err, salt) => {
+    if (err) return next(err);
+
+    bcrypt.hash(this.password, salt, (err, hash) => {
+      if (err) return next(err);
+
+      this.password = hash;
+      next();
+    });
+  });
+});
+
+schema.methods = {
+  comparePassword: (string, callback) => {
+    bcrypt.compare(string, this.password, (err, same) => {
+      if (err) return callback(err);
+
+      callback(null, same);
+    });
+  }
+};
+
+module.exports = mongoose.model("User", schema);
