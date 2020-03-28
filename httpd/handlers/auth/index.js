@@ -8,6 +8,7 @@ router.post('/login', (req, res) => {
   services.auth
     .login(email, password)
     .then(({ token, user, status }) => {
+      req.session.token = token;
       return res.status(status).json({
         message: 'Successfully logged in',
         user: {

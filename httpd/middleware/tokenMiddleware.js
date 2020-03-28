@@ -20,8 +20,6 @@ module.exports = (req, res, next) => {
             msg: 'Unauthorized user please login to proceed'
           });
         }
-        req.session.token = token;
-        console.log(req.session.token);
         next();
       }
     );
