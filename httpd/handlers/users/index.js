@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const User = require("../../../models/User");
 const bcrypt = require("bcrypt");
-console.log(__dirname)
+
 router.get("/", (req, res) => {
   res.json({
     msg: "User"
