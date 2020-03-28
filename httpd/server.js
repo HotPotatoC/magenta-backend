@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express"),
   cors = require("cors"),
+  config = require("../config"),
   bodyParser = require("body-parser"),
   morgan = require("morgan"),
   mongoose = require("mongoose"),
@@ -8,14 +9,12 @@ const express = require("express"),
   session = require("express-session");
 
 const app = express();
-const redisClient = redis.createClient(process.env.REDIS_URL, {
-  no_ready_check: true
-});
+const redisClient = redis.createClient(config.redis.uri, config.redis.options);
 const redisStore = require("connect-redis")(session);
 const port = process.env.PORT;
 
 mongoose
-  .connect(process.env.MONGODB_URI, {useNewUrlParser: true})
+  .connect(config.database.uri, config.database.options)
   .catch(err => console.log(err));
 
 redisClient.on("error", err => {
