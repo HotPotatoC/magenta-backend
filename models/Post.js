@@ -1,17 +1,17 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema(
   {
     content: {
       type: String,
-      required: [true, "Cannot be blank"],
+      required: [true, 'Cannot be blank'],
       index: true
     },
     author: {
       type: String
     }
   },
-  {timestamps: true}
+  { timestamps: true }
 );
 
-module.exports = mongoose.model("Post", schema);
+module.exports = mongoose.model('Post', schema);

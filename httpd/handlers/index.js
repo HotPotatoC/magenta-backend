@@ -1,5 +1,6 @@
-const fs = require("fs");
-const handlerDir = "./httpd/handlers/";
+const fs = require('fs');
+
+const handlerDir = './httpd/handlers/';
 
 // Automatically requires all the handlers
 module.exports = app => {
@@ -7,11 +8,11 @@ module.exports = app => {
     if (err) throw err;
 
     directories.forEach(directory => {
-      if (!directory.endsWith(".js")) {
-        fs.readdir(handlerDir + directory, (err, file) => {
-          if (err) throw err;
+      if (!directory.endsWith('.js')) {
+        fs.readdir(handlerDir + directory, (_err, file) => {
+          if (_err) throw _err;
 
-          let handler = require(`./${directory}/${file[0]}`);
+          const handler = require(`./${directory}/${file[0]}`);
           app.use(handler.path, handler.router);
         });
       }
