@@ -1,13 +1,14 @@
 const router = require("express").Router();
 const services = require("../../../services");
+const tokenMiddleware = require("../../middleware/tokenMiddleware");
 
-router.get("/", (req, res) => {
+router.get("/", tokenMiddleware, (req, res) => {
   services.users.getUsers((err, docs) => {
     if (err) {
       console.log(err);
       res.status(500).json({
         status: res.statusCode,
-        msg: "There was a problem on our side."
+        message: "There was a problem on our side."
       });
       return;
     }
@@ -18,7 +19,7 @@ router.get("/", (req, res) => {
   });
 });
 
-router.get("/:username", (req, res) => {
+router.get("/:username", tokenMiddleware, (req, res) => {
   const {username} = req.params;
 
   services.users.getUserByUsername(username, (err, doc) => {
@@ -26,7 +27,7 @@ router.get("/:username", (req, res) => {
       console.log(err);
       res.status(500).json({
         status: res.statusCode,
-        msg: "There was a problem on our side."
+        message: "There was a problem on our side."
       });
       return;
     }
@@ -35,7 +36,7 @@ router.get("/:username", (req, res) => {
   });
 });
 
-router.post("/", (req, res) => {
+router.post("/", tokenMiddleware, (req, res) => {
   const payload = req.body;
 
   services.users.registerNewUser(payload, (err, product) => {
@@ -43,7 +44,7 @@ router.post("/", (req, res) => {
       console.log(err);
       res.status(500).json({
         status: res.statusCode,
-        msg: "There was a problem on our side."
+        message: "There was a problem on our side."
       });
       return;
     }
@@ -55,7 +56,7 @@ router.post("/", (req, res) => {
   });
 });
 
-router.put("/:username", (req, res) => {
+router.put("/:username", tokenMiddleware, (req, res) => {
   const {username} = req.params;
   const payload = req.body;
 
@@ -64,7 +65,7 @@ router.put("/:username", (req, res) => {
       console.log(err);
       res.status(500).json({
         status: res.statusCode,
-        msg: "There was a problem on our side."
+        message: "There was a problem on our side."
       });
       return;
     }
@@ -74,14 +75,14 @@ router.put("/:username", (req, res) => {
   });
 });
 
-router.delete("/:username", (req, res) => {
+router.delete("/:username", tokenMiddleware, (req, res) => {
   const {username} = req.params;
   services.users.deleteUserByUsername(username, (err, result) => {
     if (err) {
       console.log(err);
       res.status(500).json({
         status: res.statusCode,
-        msg: "There was a problem on our side."
+        message: "There was a problem on our side."
       });
       return;
     }

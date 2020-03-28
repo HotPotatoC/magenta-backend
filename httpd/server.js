@@ -23,7 +23,7 @@ redisClient.on("error", err => {
 
 app.use(
   session({
-    secret: process.env.SECRET_KEY,
+    secret: process.env.REDIS_SECRET_KEY,
     resave: true,
     saveUninitialized: true,
     store: new redisStore({

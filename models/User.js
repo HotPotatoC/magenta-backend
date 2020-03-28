@@ -47,14 +47,12 @@ schema.pre("save", function(next) {
   });
 });
 
-schema.methods = {
-  comparePassword: (string, callback) => {
-    bcrypt.compare(string, this.password, (err, same) => {
-      if (err) return callback(err);
+schema.statics.comparePassword = function(string, hash, callback) {
+  bcrypt.compare(string, hash, (err, same) => {
+    if (err) return callback(err);
 
-      callback(null, same);
-    });
-  }
+    callback(null, same);
+  });
 };
 
 module.exports = mongoose.model("User", schema);
