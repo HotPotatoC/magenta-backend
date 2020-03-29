@@ -2,6 +2,7 @@ const router = require('express').Router();
 const config = require('../../../config');
 const services = require('../../../services');
 
+/* eslint-disable consistent-return */
 router.post('/login', (req, res) => {
   const { email, password } = req.body;
 
@@ -9,12 +10,14 @@ router.post('/login', (req, res) => {
     .login(email, password)
     .then(({ token, user, status }) => {
       req.session.token = token;
-      return res.status(status).json({
+
+      res.status(status).json({
         message: 'Successfully logged in',
         user: {
           id: user._id,
           username: user.username,
           email: user.email,
+          img_url: user.img_url,
         },
         token,
         expiresIn: config.jwt.options.expiresIn,
@@ -30,11 +33,9 @@ router.post('/login', (req, res) => {
         return;
       }
 
-      if (status === 401) {
-        res.status(status).json({
-          msg: 'Unauthorized user please login to proceed',
-        });
-      }
+      res.status(status).json({
+        msg: 'Unauthorized user please login to proceed',
+      });
     });
 });
 
