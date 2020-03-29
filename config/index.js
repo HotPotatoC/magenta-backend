@@ -7,7 +7,7 @@ module.exports = {
     },
   },
   redis: {
-    uri: process.env.REDIS_URL,
+    unix_socket: process.env.REDIS_URL,
     options: {
       no_ready_check: true,
     },
