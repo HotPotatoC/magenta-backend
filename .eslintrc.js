@@ -3,29 +3,23 @@ module.exports = {
     browser: true,
     commonjs: true,
     node: true,
-    es6: true
+    es6: true,
   },
-  extends: 'airbnb-base',
+  extends: ['airbnb', 'prettier'],
+  plugins: ['prettier'],
   globals: {
     Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly'
+    SharedArrayBuffer: 'readonly',
   },
   parserOptions: {
-    ecmaVersion: 2018
+    ecmaVersion: 2018,
+    allowImportExportEverywhere: true,
   },
   rules: {
-    'no-console': ['off'],
-    'arrow-body-style': ['off'],
-    'linebreak-style': ['error', 'windows'],
-    'consistent-return': ['off'],
-    'no-underscore-dangle': ['off'],
-    'comma-dangle': ['off'],
-    'object-curly-spacing': ['off'],
-    'arrow-parens': ['off'],
-    'import/no-dynamic-require': ['off'],
-    'global-require': ['off'],
-    'func-names': ['off'],
-    'space-before-function-paren': ['off'],
-    'prefer-promise-reject-errors': ['off']
-  }
+    'prefer-promise-reject-errors': 'off',
+    'no-underscore-dangle': 'off',
+    'func-names': 'off',
+    'no-console': 'off',
+    'import/no-dynamic-require': 'off',
+  },
 };

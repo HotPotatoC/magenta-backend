@@ -8,24 +8,24 @@ module.exports = (req, res, next) => {
       token,
       process.env.JWT_SECRET_KEY,
       { clockTimestamp: new Date().getTime() },
-      err => {
+      (err) => {
         if (err) {
           if (err.name === 'TokenExpiredError') {
             return res.status(401).json({
               msg: 'Login session has expired please login',
-              expiredAt: err.expiredAt
+              expiredAt: err.expiredAt,
             });
           }
           return res.status(401).json({
-            msg: 'Unauthorized user please login to proceed'
+            msg: 'Unauthorized user please login to proceed',
           });
         }
-        next();
+        return next();
       }
     );
-  } else {
-    return res.status(401).json({
-      msg: 'Unauthorized user please login to proceed'
-    });
   }
+
+  return res.status(401).json({
+    msg: 'Unauthorized user please login to proceed',
+  });
 };

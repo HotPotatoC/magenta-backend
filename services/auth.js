@@ -17,16 +17,18 @@ const login = (email, password) => {
           process.env.JWT_SECRET_KEY,
           config.jwt.options
         );
-        resolve({
+        return resolve({
           token,
           user,
-          status: 200
+          status: 200,
         });
       });
+
+      return null;
     });
   });
 };
 
 module.exports = {
-  login
+  login,
 };

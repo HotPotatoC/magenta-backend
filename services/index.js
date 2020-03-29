@@ -1,4 +1,7 @@
+const users = require('./users');
+const auth = require('./auth');
+
 module.exports = {
-  users: require('./users'),
-  auth: require('./auth')
+  users,
+  auth,
 };

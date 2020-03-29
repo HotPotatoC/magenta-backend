@@ -11,28 +11,28 @@ const schema = new mongoose.Schema(
       required: [true, 'Cannot be blank'],
       match: [/^[a-zA-Z0-9]+$/, 'is invalid'],
       unique: true,
-      index: true
+      index: true,
     },
     email: {
       type: String,
       required: [true, 'Cannot be blank'],
       match: [/\S+@\S+\.\S+/, 'is invalid'],
       unique: true,
-      index: true
+      index: true,
     },
     password: {
       type: String,
-      required: [true, 'Cannot be blank']
-    }
+      required: [true, 'Cannot be blank'],
+    },
   },
   { timestamps: true }
 );
 
 schema.plugin(uniqueValidator, {
-  message: 'Is already taken.'
+  message: 'Is already taken.',
 });
 
-schema.pre('save', function(next) {
+schema.pre('save', function (next) {
   if (!this.isModified('password')) return next();
 
   bcrypt.genSalt(saltWorkFactor, (err, salt) => {
@@ -42,16 +42,20 @@ schema.pre('save', function(next) {
       if (_err) return next(_err);
 
       this.password = hash;
-      next();
+      return next();
     });
+
+    return null;
   });
+
+  return null;
 });
 
-schema.statics.comparePassword = function(string, hash, callback) {
+schema.statics.comparePassword = function (string, hash, callback) {
   bcrypt.compare(string, hash, (err, same) => {
     if (err) return callback(err);
 
-    callback(null, same);
+    return callback(null, same);
   });
 };
 

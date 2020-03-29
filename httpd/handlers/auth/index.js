@@ -14,10 +14,10 @@ router.post('/login', (req, res) => {
         user: {
           id: user._id,
           username: user.username,
-          email: user.email
+          email: user.email,
         },
         token,
-        expiresIn: config.jwt.options.expiresIn
+        expiresIn: config.jwt.options.expiresIn,
       });
     })
     .catch(({ err, status }) => {
@@ -25,25 +25,20 @@ router.post('/login', (req, res) => {
         console.log(err);
         res.status(status).json({
           status: res.statusCode,
-          message: 'There was a problem on our side.'
+          message: 'There was a problem on our side.',
         });
         return;
       }
 
       if (status === 401) {
-        return res.status(status).json({
-          msg: 'Unauthorized user please login to proceed'
+        res.status(status).json({
+          msg: 'Unauthorized user please login to proceed',
         });
       }
     });
 });
 
-// eslint-disable-next-line
-router.get('/token', (req, res) => {
-  //
-});
-
 module.exports = {
   path: '/auth',
-  router
+  router,
 };

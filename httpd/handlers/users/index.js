@@ -8,13 +8,13 @@ router.get('/', tokenMiddleware, (req, res) => {
       console.log(err);
       res.status(500).json({
         status: res.statusCode,
-        message: 'There was a problem on our side.'
+        message: 'There was a problem on our side.',
       });
       return;
     }
 
     res.status(200).json({
-      docs
+      docs,
     });
   });
 });
@@ -27,7 +27,7 @@ router.get('/:username', tokenMiddleware, (req, res) => {
       console.log(err);
       res.status(500).json({
         status: res.statusCode,
-        message: 'There was a problem on our side.'
+        message: 'There was a problem on our side.',
       });
       return;
     }
@@ -44,14 +44,14 @@ router.post('/', tokenMiddleware, (req, res) => {
       console.log(err);
       res.status(500).json({
         status: res.statusCode,
-        message: 'There was a problem on our side.'
+        message: 'There was a problem on our side.',
       });
       return;
     }
 
     res.status(201).json({
       message: 'Successfully inserted a new user to the collection',
-      new: product
+      new: product,
     });
   });
 });
@@ -60,17 +60,17 @@ router.put('/:username', tokenMiddleware, (req, res) => {
   const { username } = req.params;
   const payload = req.body;
 
-  services.users.updateUserByUsername(username, payload, err => {
+  services.users.updateUserByUsername(username, payload, (err) => {
     if (err) {
       console.log(err);
       res.status(500).json({
         status: res.statusCode,
-        message: 'There was a problem on our side.'
+        message: 'There was a problem on our side.',
       });
       return;
     }
     res.status(200).json({
-      message: 'Successfully updated user'
+      message: 'Successfully updated user',
     });
   });
 });
@@ -82,18 +82,18 @@ router.delete('/:username', tokenMiddleware, (req, res) => {
       console.log(err);
       res.status(500).json({
         status: res.statusCode,
-        message: 'There was a problem on our side.'
+        message: 'There was a problem on our side.',
       });
       return;
     }
 
     res.status(200).json({
-      msg: `Successfully deleted ${result.deletedCount} data`
+      msg: `Successfully deleted ${result.deletedCount} data`,
     });
   });
 });
 
 module.exports = {
   path: '/users',
-  router
+  router,
 };

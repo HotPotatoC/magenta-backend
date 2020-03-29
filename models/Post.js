@@ -5,11 +5,11 @@ const schema = new mongoose.Schema(
     content: {
       type: String,
       required: [true, 'Cannot be blank'],
-      index: true
+      index: true,
     },
     author: {
-      type: String
-    }
+      type: String,
+    },
   },
   { timestamps: true }
 );

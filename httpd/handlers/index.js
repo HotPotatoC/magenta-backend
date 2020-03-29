@@ -1,13 +1,13 @@
+/* eslint-disable global-require */
 const fs = require('fs');
 
 const handlerDir = './httpd/handlers/';
-
 // Automatically requires all the handlers
-module.exports = app => {
+module.exports = (app) => {
   fs.readdir(handlerDir, (err, directories) => {
     if (err) throw err;
 
-    directories.forEach(directory => {
+    directories.forEach((directory) => {
       if (!directory.endsWith('.js')) {
         fs.readdir(handlerDir + directory, (_err, file) => {
           if (_err) throw _err;

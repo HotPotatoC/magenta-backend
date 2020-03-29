@@ -16,9 +16,9 @@ const port = process.env.PORT;
 
 mongoose
   .connect(config.database.uri, config.database.options)
-  .catch(err => console.log(err));
+  .catch((err) => console.log(err));
 
-redisClient.on('error', err => {
+redisClient.on('error', (err) => {
   console.log(`❌ Redis error: ${err}`);
 });
 
@@ -28,14 +28,14 @@ app.use(
     resave: true,
     saveUninitialized: true,
     store: new RedisStore({
-      client: redisClient
-    })
+      client: redisClient,
+    }),
   })
 );
 
 app.use(
   bodyParser.urlencoded({
-    extended: true
+    extended: true,
   })
 );
 
