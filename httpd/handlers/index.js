@@ -1,4 +1,3 @@
-/* eslint-disable global-require */
 const fs = require('fs');
 
 const handlerDir = './httpd/handlers/';
@@ -12,7 +11,8 @@ module.exports = (app) => {
         fs.readdir(handlerDir + directory, (_err, file) => {
           if (_err) throw _err;
 
-          const handler = require(`./${directory}/${file[0]}`);
+          /* eslint-disable-next-line global-require */
+          const handler = require(`./${directory}/${file[1]}`);
           app.use(handler.path, handler.router);
         });
       }
