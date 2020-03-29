@@ -8,11 +8,11 @@ module.exports = (app) => {
 
     directories.forEach((directory) => {
       if (!directory.endsWith('.js')) {
-        fs.readdir(handlerDir + directory, (_err, file) => {
+        fs.readdir(handlerDir + directory, (_err) => {
           if (_err) throw _err;
 
           /* eslint-disable-next-line global-require */
-          const handler = require(`./${directory}/${file[1]}`);
+          const handler = require(`./${directory}/routes.js`);
           app.use(handler.path, handler.router);
         });
       }
