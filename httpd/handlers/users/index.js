@@ -39,7 +39,7 @@ router.get('/:username', tokenMiddleware, (req, res) => {
 router.post('/', tokenMiddleware, (req, res) => {
   const payload = req.body;
 
-  services.users.registerNewUser(payload, (err, product) => {
+  services.users.registerNewUser(payload, (err) => {
     if (err) {
       console.log(err);
       res.status(500).json({
@@ -51,7 +51,6 @@ router.post('/', tokenMiddleware, (req, res) => {
 
     res.status(201).json({
       message: 'Successfully inserted a new user to the collection',
-      new: product,
     });
   });
 });

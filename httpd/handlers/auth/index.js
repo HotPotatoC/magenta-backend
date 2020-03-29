@@ -38,6 +38,25 @@ router.post('/login', (req, res) => {
     });
 });
 
+router.post('/register', (req, res) => {
+  const payload = req.body;
+
+  services.users.registerNewUser(payload, (err) => {
+    if (err) {
+      console.log(err);
+      res.status(500).json({
+        status: res.statusCode,
+        message: 'There was a problem on our side.',
+      });
+      return;
+    }
+
+    res.status(201).json({
+      message: 'Successfully inserted a new user to the collection',
+    });
+  });
+});
+
 module.exports = {
   path: '/auth',
   router,

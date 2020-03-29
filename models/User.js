@@ -24,6 +24,10 @@ const schema = new mongoose.Schema(
       type: String,
       required: [true, 'Cannot be blank'],
     },
+    img_url: {
+      type: String,
+      default: '',
+    },
   },
   { timestamps: true }
 );

@@ -25,6 +25,7 @@ const registerNewUser = (payload, callback) => {
     username: payload.username,
     email: payload.email,
     password: payload.password,
+    img_url: payload.img_url || '',
   });
 
   user.save((err, product) => {
