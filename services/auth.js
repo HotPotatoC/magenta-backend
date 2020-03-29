@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const config = require('../config');
 
+/* eslint-disable consistent-return */
 const login = (email, password) => {
   return new Promise((resolve, reject) => {
     User.findOne({ email }, (err, user) => {
@@ -23,8 +24,6 @@ const login = (email, password) => {
           status: 200,
         });
       });
-
-      return null;
     });
   });
 };

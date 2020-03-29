@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 
+/* eslint-disable consistent-return */
 module.exports = (req, res, next) => {
   if (req.headers && req.headers.authorization) {
     const token = req.headers.authorization;
@@ -20,12 +21,8 @@ module.exports = (req, res, next) => {
             msg: 'Unauthorized user please login to proceed',
           });
         }
-        return next();
+        next();
       }
     );
   }
-
-  return res.status(401).json({
-    msg: 'Unauthorized user please login to proceed',
-  });
 };

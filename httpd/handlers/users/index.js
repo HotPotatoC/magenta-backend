@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const services = require('../../../services');
-const tokenMiddleware = require('../../middleware/tokenMiddleware');
+const tokenMiddleware = require('../../middlewares/tokenMiddleware');
 
 router.get('/', tokenMiddleware, (req, res) => {
   services.users.getUsers((err, docs) => {

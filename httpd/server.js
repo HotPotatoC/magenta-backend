@@ -11,7 +11,10 @@ const RedisStore = require('connect-redis')(session);
 const app = express();
 const config = require('../config');
 
-const redisClient = redis.createClient(config.redis.unix_socket, config.redis.options);
+const redisClient = redis.createClient(
+  config.redis.unix_socket,
+  config.redis.options
+);
 const port = process.env.PORT;
 
 mongoose
