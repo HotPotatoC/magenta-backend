@@ -10,7 +10,9 @@ module.exports = {
     },
   },
   redis: {
-    unix_socket: process.env.REDIS_URL,
+    unix_socket: isProduction
+      ? process.env.REDISCLOUD_URL
+      : process.env.REDIS_URL,
     options: {
       no_ready_check: true,
     },
