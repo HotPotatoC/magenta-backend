@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Server = require('./config/express');
+const server = require('./config/express');
 
 const port = process.env.PORT;
 const config = require('./config');
@@ -17,6 +17,6 @@ mongoose
     process.exit();
   });
 
-Server.listen(port, () => {
+server.listen(port, () => {
   console.log(`✅ Listening server on 127.0.0.1:${port}`);
 });
