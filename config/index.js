@@ -15,10 +15,7 @@ module.exports = {
       : process.env.REDIS_URL,
     options: {
       no_ready_check: true,
-      password:
-        process.env.NODE_ENV === 'production'
-          ? process.env.REDISCLOUD_PASS
-          : '',
+      password: isProduction ? process.env.REDISCLOUD_PASS : '',
     },
   },
   jwt: {
