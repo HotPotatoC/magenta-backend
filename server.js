@@ -4,8 +4,6 @@ const server = require('./config/express');
 const port = process.env.PORT;
 const config = require('./config');
 
-console.log(config);
-
 mongoose.set('useCreateIndex', true);
 mongoose
   .connect(config.database.uri, config.database.options)
