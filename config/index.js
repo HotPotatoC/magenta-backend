@@ -1,6 +1,8 @@
+const isProduction = process.env.NODE_ENV === 'production';
+
 module.exports = {
   database: {
-    uri: process.env.MONGODB_URI,
+    uri: isProduction ? process.env.MONGOLAB_URI : process.env.MONGODB_URI,
     options: {
       useNewUrlParser: true,
       useUnifiedTopology: true,
