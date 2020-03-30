@@ -7,7 +7,6 @@ const config = require('./config');
 mongoose.set('useCreateIndex', true);
 mongoose.connect(config.database.uri, config.database.options).catch((err) => {
   console.log(`❌ Database Connection Error: ${err}`);
-  process.exit();
 });
 
 server.listen(port, () => {
