@@ -1,7 +1,7 @@
 const config = require('../../../config');
 const services = require('../../../services');
 
-module.exports.loginHandler = (req, res) => {
+const loginHandler = (req, res) => {
   const { email, password } = req.body;
 
   services.auth
@@ -37,7 +37,7 @@ module.exports.loginHandler = (req, res) => {
     });
 };
 
-module.exports.registerHandler = (req, res) => {
+const registerHandler = (req, res) => {
   const payload = req.body;
 
   services.users.registerNewUser(payload, (err) => {
@@ -54,4 +54,9 @@ module.exports.registerHandler = (req, res) => {
       message: 'Successfully inserted a new user to the collection',
     });
   });
+};
+
+module.exports = {
+  loginHandler,
+  registerHandler,
 };
