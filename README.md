@@ -1,6 +1,6 @@
-# Feedr Backend
+# Magenta Backend
 
-This is the backend repository for feedr social media network
+This is the backend repository for magenta social media network
 
 ## Getting Started
 
