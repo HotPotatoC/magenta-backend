@@ -10,6 +10,7 @@ const app = express();
 const { session, options } = require('./session');
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 app.use(compression());
 app.use(cors());
 app.use(session(options));
