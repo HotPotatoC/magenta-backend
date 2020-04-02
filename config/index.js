@@ -21,7 +21,7 @@ module.exports = {
   jwt: {
     options: {
       algorithm: 'HS256',
-      expiresIn: '2h', // 2 hours
+      expiresIn: Math.floor(Date.now() / 1000) + 60 * 60, // 2 hours
     },
   },
 };
