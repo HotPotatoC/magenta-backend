@@ -21,5 +21,11 @@ module.exports = {
     'func-names': 'off',
     'no-console': 'off',
     'import/no-dynamic-require': 'off',
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
   },
 };
