@@ -1,4 +1,4 @@
-const services = require('../../../services');
+const services = require('../../services');
 
 const getCommentsByPostHandler = (req, res) => {
   const postId = req.params.id;

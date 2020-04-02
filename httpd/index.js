@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const handlerDir = './httpd/handlers/';
+const handlerDir = './httpd/';
 // Automatically requires all the handlers
 module.exports = (app) => {
   fs.readdir(handlerDir, (err, directories) => {

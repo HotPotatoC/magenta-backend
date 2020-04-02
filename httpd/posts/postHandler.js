@@ -1,4 +1,4 @@
-const services = require('../../../services');
+const services = require('../../services');
 
 const getPostsHandler = (req, res) => {
   services.posts.getAllPosts((err, docs) => {

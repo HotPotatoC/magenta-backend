@@ -19,6 +19,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Mount Routes
-require('../httpd/handlers/index')(app);
+require('../httpd')(app);
 
 module.exports = http.createServer(app);

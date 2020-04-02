@@ -1,5 +1,5 @@
-const config = require('../../../config');
-const services = require('../../../services');
+const config = require('../../config');
+const services = require('../../services');
 
 const loginHandler = (req, res) => {
   const { email, password } = req.body;
