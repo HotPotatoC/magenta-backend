@@ -1,12 +1,25 @@
 const router = require('express').Router();
 const tokenMiddleware = require('../../middlewares/tokenMiddleware');
-const handler = require('./handler');
+const postHandler = require('./postHandler');
+const commentHandler = require('./commentHandler');
 
-router.get('/', tokenMiddleware, handler.getPostsHandler);
-router.get('/:id', tokenMiddleware, handler.getSinglePostHandler);
-router.post('/', tokenMiddleware, handler.createPostHandler);
-router.put('/:id', tokenMiddleware, handler.updatePostHandler);
-router.delete('/:id', tokenMiddleware, handler.deletePostHandler);
+router.get('/', tokenMiddleware, postHandler.getPostsHandler);
+router.get('/:id', tokenMiddleware, postHandler.getSinglePostHandler);
+router.post('/', tokenMiddleware, postHandler.createPostHandler);
+router.put('/:id', tokenMiddleware, postHandler.updatePostHandler);
+router.delete('/:id', tokenMiddleware, postHandler.deletePostHandler);
+
+// Comments
+router.get(
+  '/:id/comments',
+  tokenMiddleware,
+  commentHandler.getCommentsByPostHandler
+);
+router.post(
+  '/:id/comments',
+  tokenMiddleware,
+  commentHandler.createCommentHandler
+);
 
 module.exports = {
   path: '/posts',

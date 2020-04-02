@@ -2,17 +2,21 @@ const Post = require('../models/Post');
 // const Comment = require('../models/Comment');
 
 const getAllPosts = (callback) => {
-  Post.find({}, (err, res) => {
-    if (err) return callback(err, null);
-    return callback(null, res);
-  });
+  Post.find({})
+    .populate('comments')
+    .exec((err, res) => {
+      if (err) return callback(err, null);
+      return callback(null, res);
+    });
 };
 
 const getSinglePost = (id, callback) => {
-  Post.findById(id, (err, res) => {
-    if (err) return callback(err, null);
-    return callback(null, res);
-  });
+  Post.findById(id)
+    .populate('comments')
+    .exec((err, res) => {
+      if (err) return callback(err, null);
+      return callback(null, res);
+    });
 };
 
 const createPost = (payload, callback) => {
