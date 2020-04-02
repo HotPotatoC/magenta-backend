@@ -9,7 +9,7 @@ const morgan = require('morgan');
 const app = express();
 const { session, options } = require('./session');
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(compression());
 app.use(cors());
 app.use(session(options));
