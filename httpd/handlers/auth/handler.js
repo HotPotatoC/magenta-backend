@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const config = require('../../../config');
 const services = require('../../../services');
 
@@ -7,6 +8,7 @@ const loginHandler = (req, res) => {
   services.auth
     .login(email, password)
     .then(({ token, user, status }) => {
+      req.session.user = user;
       req.session.token = token;
 
       res.status(status).json({
@@ -56,7 +58,37 @@ const registerHandler = (req, res) => {
   });
 };
 
+const checkToken = (req, res) => {
+  const token = req.headers.authorization;
+
+  jwt.verify(
+    token,
+    process.env.JWT_SECRET_KEY,
+    { clockTimestamp: new Date().getTime() },
+    (err, decoded) => {
+      if (err) {
+        if (err.name === 'TokenExpiredError') {
+          return res.status(401).json({
+            msg: 'Login session has expired please login',
+            expiredAt: err.expiredAt,
+          });
+        }
+        return res.status(401).json({
+          msg: 'Unauthorized user please login to proceed',
+          err,
+        });
+      }
+
+      return res.status(200).json({
+        user_id: decoded.userId,
+        msg: 'Token still valid',
+      });
+    }
+  );
+};
+
 module.exports = {
   loginHandler,
   registerHandler,
+  checkToken,
 };
