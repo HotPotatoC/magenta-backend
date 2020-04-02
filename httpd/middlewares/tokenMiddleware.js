@@ -24,5 +24,9 @@ module.exports = (req, res, next) => {
         next();
       }
     );
+  } else {
+    return res.status(401).json({
+      msg: 'Unauthorized user please login to proceed',
+    });
   }
 };
