@@ -10,5 +10,5 @@ mongoose.connect(config.database.uri, config.database.options).catch((err) => {
 });
 
 server.listen(port, () => {
-  console.log(`✅ Listening server on 127.0.0.1:${port}`);
+  console.log('✅ Server Has Started');
 });
