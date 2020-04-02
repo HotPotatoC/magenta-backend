@@ -1,4 +1,4 @@
-const services = require('../../../services');
+const services = require('../../services');
 
 const getUsersHandler = (req, res) => {
   services.users.getUsers((err, docs) => {

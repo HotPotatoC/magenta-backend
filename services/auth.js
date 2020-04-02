@@ -28,6 +28,19 @@ const login = (email, password) => {
   });
 };
 
+const checkToken = (token, callback) => {
+  jwt.verify(
+    token,
+    process.env.JWT_SECRET_KEY,
+    { clockTimestamp: new Date().getTime() },
+    (err, decoded) => {
+      if (err) return callback(err, null);
+      return callback(null, decoded);
+    }
+  );
+};
+
 module.exports = {
   login,
+  checkToken,
 };
