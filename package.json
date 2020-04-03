@@ -7,7 +7,7 @@
     "lint": "./node_modules/.bin/eslint .",
     "lint:fix": "npm run lint -- --fix",
     "start": "node ./server.js",
-    "start:dev": "clear && nodemon ./server.js",
+    "start:dev": "cls && nodemon ./server.js",
     "test": "./node_modules/mocha/bin/mocha"
   },
   "keywords": [],
