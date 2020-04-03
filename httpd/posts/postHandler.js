@@ -1,6 +1,6 @@
 const services = require('../../services');
 
-const getPostsHandler = (req, res) => {
+function getPostsHandler(req, res) {
   services.posts.getAllPosts((err, docs) => {
     if (err) {
       console.log(err);
@@ -15,9 +15,9 @@ const getPostsHandler = (req, res) => {
       docs,
     });
   });
-};
+}
 
-const getSinglePostHandler = (req, res) => {
+function getSinglePostHandler(req, res) {
   const postId = req.params.id;
 
   services.posts.getSinglePost(postId, (err, docs) => {
@@ -32,9 +32,9 @@ const getSinglePostHandler = (req, res) => {
 
     res.status(200).json(docs);
   });
-};
+}
 
-const createPostHandler = (req, res) => {
+function createPostHandler(req, res) {
   const payload = {
     user_id: req.session.user._id,
     ...req.body,
@@ -53,9 +53,9 @@ const createPostHandler = (req, res) => {
       message: 'Successfully inserted a new post to the collection',
     });
   });
-};
+}
 
-const updatePostHandler = (req, res) => {
+function updatePostHandler(req, res) {
   const postId = req.params.id;
   const payload = req.body;
 
@@ -72,9 +72,9 @@ const updatePostHandler = (req, res) => {
       message: 'Successfully updated post',
     });
   });
-};
+}
 
-const deletePostHandler = (req, res) => {
+function deletePostHandler(req, res) {
   const postId = req.params.id;
 
   services.posts.deletePost(postId, (err, result) => {
@@ -91,7 +91,7 @@ const deletePostHandler = (req, res) => {
       msg: `Successfully deleted ${result.deletedCount} data`,
     });
   });
-};
+}
 
 module.exports = {
   getPostsHandler,

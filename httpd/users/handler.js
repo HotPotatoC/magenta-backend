@@ -1,6 +1,6 @@
 const services = require('../../services');
 
-const getUsersHandler = (req, res) => {
+function getUsersHandler(req, res) {
   services.users.getUsers((err, docs) => {
     if (err) {
       console.log(err);
@@ -15,9 +15,9 @@ const getUsersHandler = (req, res) => {
       docs,
     });
   });
-};
+}
 
-const getOneUserHandler = (req, res) => {
+function getOneUserHandler(req, res) {
   const { username } = req.params;
 
   services.users.getUserByUsername(username, (err, doc) => {
@@ -32,9 +32,9 @@ const getOneUserHandler = (req, res) => {
 
     res.status(200).json(doc);
   });
-};
+}
 
-const registerUserHandler = (req, res) => {
+function registerUserHandler(req, res) {
   const payload = req.body;
 
   services.users.registerNewUser(payload, (err) => {
@@ -51,9 +51,9 @@ const registerUserHandler = (req, res) => {
       message: 'Successfully inserted a new user to the collection',
     });
   });
-};
+}
 
-const updateUserHandler = (req, res) => {
+function updateUserHandler(req, res) {
   const { username } = req.params;
   const payload = req.body;
 
@@ -70,9 +70,9 @@ const updateUserHandler = (req, res) => {
       message: 'Successfully updated user',
     });
   });
-};
+}
 
-const deleteUserHandler = (req, res) => {
+function deleteUserHandler(req, res) {
   const { username } = req.params;
   services.users.deleteUserByUsername(username, (err, result) => {
     if (err) {
@@ -88,7 +88,7 @@ const deleteUserHandler = (req, res) => {
       msg: `Successfully deleted ${result.deletedCount} data`,
     });
   });
-};
+}
 
 module.exports = {
   getUsersHandler,

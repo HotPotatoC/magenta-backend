@@ -1,6 +1,6 @@
 const services = require('../../services');
 
-const getCommentsByPostHandler = (req, res) => {
+function getCommentsByPostHandler(req, res) {
   const postId = req.params.id;
 
   services.comments.getCommentsByPostId(postId, (err, docs) => {
@@ -15,9 +15,9 @@ const getCommentsByPostHandler = (req, res) => {
 
     res.status(200).json(docs);
   });
-};
+}
 
-const createCommentHandler = (req, res) => {
+function createCommentHandler(req, res) {
   const token = req.headers.authorization;
 
   services.auth.checkToken(token, (err, decoded) => {
@@ -48,7 +48,7 @@ const createCommentHandler = (req, res) => {
       });
     });
   });
-};
+}
 
 module.exports = {
   getCommentsByPostHandler,

@@ -1,7 +1,7 @@
 const config = require('../../config');
 const services = require('../../services');
 
-const loginHandler = (req, res) => {
+function loginHandler(req, res) {
   const { email, password } = req.body;
 
   services.auth
@@ -36,9 +36,9 @@ const loginHandler = (req, res) => {
         msg: 'Unauthorized user please login to proceed',
       });
     });
-};
+}
 
-const registerHandler = (req, res) => {
+function registerHandler(req, res) {
   const payload = req.body;
 
   services.users.registerNewUser(payload, (err) => {
@@ -55,9 +55,9 @@ const registerHandler = (req, res) => {
       message: 'Successfully inserted a new user to the collection',
     });
   });
-};
+}
 
-const checkToken = (req, res) => {
+function checkToken(req, res) {
   const token = req.headers.authorization;
 
   services.auth.checkToken(token, (err, decoded) => {
@@ -79,7 +79,7 @@ const checkToken = (req, res) => {
       msg: 'Token still valid',
     });
   });
-};
+}
 
 module.exports = {
   loginHandler,
