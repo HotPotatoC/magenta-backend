@@ -17,6 +17,8 @@ mongoose
       if (process.env.NODE_ENV !== 'production') {
         console.log(`
         Server started at: ${chalk.bgMagenta(`127.0.0.1:${port}`)}
+        MongoDB: ${config.database.uri}/${config.database.options.dbName}
+        Redis: ${config.redis.unix_socket}
         `);
       }
     });
