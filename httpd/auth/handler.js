@@ -75,7 +75,9 @@ function checkToken(req, res) {
     }
 
     return res.status(200).json({
-      user_id: decoded.userId,
+      userId: decoded.userId,
+      username: decoded.username,
+      email: decoded.email,
       msg: 'Token still valid',
     });
   });

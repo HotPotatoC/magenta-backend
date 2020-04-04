@@ -14,7 +14,7 @@ const login = (email, password) => {
         if (!same) return reject({ err, status: 401 });
 
         const token = jwt.sign(
-          { userId: user._id },
+          { userId: user._id, username: user.username, email: user.email },
           process.env.JWT_SECRET_KEY,
           config.jwt.options
         );
