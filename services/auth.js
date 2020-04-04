@@ -15,7 +15,7 @@ const login = (email, password) => {
 
         const token = jwt.sign(
           { userId: user._id, username: user.username, email: user.email },
-          process.env.JWT_SECRET_KEY,
+          process.env.ACCESS_TOKEN_KEY,
           config.jwt.options
         );
         return resolve({
@@ -31,7 +31,7 @@ const login = (email, password) => {
 const checkToken = (token, callback) => {
   jwt.verify(
     token,
-    process.env.JWT_SECRET_KEY,
+    process.env.ACCESS_TOKEN_KEY,
     { clockTimestamp: new Date().getTime() },
     (err, decoded) => {
       if (err) return callback(err, null);

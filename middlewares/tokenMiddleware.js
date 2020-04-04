@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
 
     jwt.verify(
       token,
-      process.env.JWT_SECRET_KEY,
+      process.env.ACCESS_TOKEN_KEY,
       { clockTimestamp: new Date().getTime() },
       (err) => {
         if (err) {
