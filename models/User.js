@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const uniqueValidator = require('mongoose-unique-validator');
+const Joi = require('joi');
 
 const saltWorkFactor = 10;
 
@@ -11,7 +12,7 @@ const schema = new mongoose.Schema(
       required: [true, 'Cannot be blank'],
       match: [/^[a-zA-Z0-9]+$/, 'is invalid'],
       min: 6,
-      max: 25,
+      max: 24,
       unique: true,
       index: true,
     },
@@ -66,5 +67,14 @@ schema.statics.comparePassword = function (string, hash, callback) {
     return callback(null, same);
   });
 };
+
+module.exports.validationSchema = Joi.object().keys({
+  username: Joi.string().min(6).max(24).required(),
+  email: Joi.string().required(),
+  password: Joi.string().min(6).max(1024).required(),
+  img_url: Joi.string().regex(
+    "^(?:http(s)?://)?[w.-]+(?:.[w.-]+)+[w-._~:/?#[]@!$&'()*+,;=.]+$"
+  ),
+});
 
 module.exports = mongoose.model('User', schema);
