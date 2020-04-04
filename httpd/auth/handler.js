@@ -50,7 +50,7 @@ function registerHandler(req, res) {
   services.users
     .registerNewUser(payload)
     .then(() => {
-      return res.status(201).json({
+      res.status(201).json({
         message: 'Successfully registered a new account!',
       });
     })
@@ -66,6 +66,7 @@ function registerHandler(req, res) {
           message: err.message,
         });
       }
+
       return res.status(500).json({
         status: res.statusCode,
         message: 'There was a problem on our side.',
