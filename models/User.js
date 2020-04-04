@@ -70,7 +70,7 @@ schema.statics.comparePassword = function (string, hash, callback) {
 
 module.exports.validationSchema = Joi.object().keys({
   username: Joi.string().min(6).max(24).required(),
-  email: Joi.string().required(),
+  email: Joi.string().email().required(),
   password: Joi.string().min(6).max(1024).required(),
   img_url: Joi.string().regex(
     "^(?:http(s)?://)?[w.-]+(?:.[w.-]+)+[w-._~:/?#[]@!$&'()*+,;=.]+$"
