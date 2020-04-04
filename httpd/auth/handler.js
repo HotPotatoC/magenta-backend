@@ -58,28 +58,34 @@ function registerHandler(req, res) {
 }
 
 function checkToken(req, res) {
-  const token = req.headers.authorization;
+  if (req.headers.authorization) {
+    const token = req.headers.authorization.split(' ')[1];
 
-  services.auth.checkToken(token, (err, decoded) => {
-    if (err) {
-      if (err.name === 'TokenExpiredError') {
-        return res.status(401).json({
-          msg: 'Login session has expired please login',
-          expiredAt: err.expiredAt,
+    services.auth.checkToken(token, (err, decoded) => {
+      if (err) {
+        if (err.name === 'TokenExpiredError') {
+          return res.status(401).json({
+            msg: 'Login session has expired please login',
+            expiredAt: err.expiredAt,
+          });
+        }
+        return res.status(403).json({
+          msg: 'Unauthorized user please login to proceed',
+          err,
         });
       }
-      return res.status(401).json({
-        msg: 'Unauthorized user please login to proceed',
-        err,
-      });
-    }
 
-    return res.status(200).json({
-      userId: decoded.userId,
-      username: decoded.username,
-      email: decoded.email,
-      msg: 'Token still valid',
+      return res.status(200).json({
+        userId: decoded.userId,
+        username: decoded.username,
+        email: decoded.email,
+        msg: 'Token still valid',
+      });
     });
+  }
+
+  return res.status(403).json({
+    msg: 'Unauthorized user please login to proceed',
   });
 }
 

@@ -2,8 +2,8 @@ const jwt = require('jsonwebtoken');
 
 /* eslint-disable consistent-return */
 module.exports = (req, res, next) => {
-  if (req.headers && req.headers.authorization) {
-    const token = req.headers.authorization;
+  if (req.headers.authorization) {
+    const token = req.headers.authorization.split(' ')[1];
 
     jwt.verify(
       token,
@@ -17,7 +17,7 @@ module.exports = (req, res, next) => {
               expiredAt: err.expiredAt,
             });
           }
-          return res.status(401).json({
+          return res.status(403).json({
             msg: 'Unauthorized user please login to proceed',
           });
         }
@@ -25,7 +25,7 @@ module.exports = (req, res, next) => {
       }
     );
   } else {
-    return res.status(401).json({
+    return res.status(403).json({
       msg: 'Unauthorized user please login to proceed',
     });
   }
