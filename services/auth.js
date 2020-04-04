@@ -39,10 +39,12 @@ const login = (email, password) => {
   });
 };
 
-const checkToken = (token, callback) => {
-  jwt.verify(token, process.env.ACCESS_TOKEN_KEY, (err, decoded) => {
-    if (err) return callback(err, null);
-    return callback(null, decoded);
+const checkToken = (token) => {
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, process.env.ACCESS_TOKEN_KEY, (err, decoded) => {
+      if (err) return reject(err);
+      return resolve(decoded);
+    });
   });
 };
 

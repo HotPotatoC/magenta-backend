@@ -46,8 +46,15 @@ function loginHandler(req, res) {
 
 function registerHandler(req, res) {
   const payload = req.body;
-  services.users.registerNewUser(payload, (err) => {
-    if (err) {
+
+  services.users
+    .registerNewUser(payload)
+    .then(() => {
+      return res.status(201).json({
+        message: 'Successfully registered a new account!',
+      });
+    })
+    .catch((err) => {
       if (err.isJoi) {
         return res.status(400).json({
           message: err.details[0].message,
@@ -63,20 +70,24 @@ function registerHandler(req, res) {
         status: res.statusCode,
         message: 'There was a problem on our side.',
       });
-    }
-
-    return res.status(201).json({
-      message: 'Successfully registered a new account!',
     });
-  });
 }
 
 function checkToken(req, res) {
   if (req.headers.authorization) {
     const token = req.headers.authorization.split(' ')[1];
 
-    services.auth.checkToken(token, (err, decoded) => {
-      if (err) {
+    services.auth
+      .checkToken(token)
+      .then((decoded) => {
+        return res.status(200).json({
+          userId: decoded.userId,
+          username: decoded.username,
+          email: decoded.email,
+          msg: 'Token still valid',
+        });
+      })
+      .catch((err) => {
         if (err.name === 'TokenExpiredError') {
           return res.status(403).json({
             msg: 'Login session has expired please login',
@@ -87,20 +98,8 @@ function checkToken(req, res) {
           msg: 'Unauthorized user please login to proceed',
           err,
         });
-      }
-
-      return res.status(200).json({
-        userId: decoded.userId,
-        username: decoded.username,
-        email: decoded.email,
-        msg: 'Token still valid',
       });
-    });
   }
-
-  return res.status(403).json({
-    msg: 'Unauthorized user please login to proceed',
-  });
 }
 
 module.exports = {
