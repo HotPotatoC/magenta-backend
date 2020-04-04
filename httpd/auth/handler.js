@@ -23,36 +23,50 @@ function loginHandler(req, res) {
       });
     })
     .catch(({ err, status }) => {
+      if (status === 400) {
+        const error = err.details[0];
+        return res.status(400).json({
+          message: error.message,
+          context: error.context,
+        });
+      }
+
       if (status === 500) {
-        console.log(err);
-        res.status(status).json({
+        return res.status(500).json({
           status: res.statusCode,
           message: 'There was a problem on our side.',
         });
-        return;
       }
 
-      res.status(status).json({
-        msg: 'Unauthorized user please login to proceed',
+      return res.status(status).json({
+        message: 'Unauthorized user please login to proceed',
       });
     });
 }
 
 function registerHandler(req, res) {
   const payload = req.body;
-
   services.users.registerNewUser(payload, (err) => {
     if (err) {
-      console.log(err);
-      res.status(500).json({
+      if (err.isJoi) {
+        return res.status(400).json({
+          message: err.details[0].message,
+          context: err.details[0].context,
+        });
+      }
+      if (err.name === 'ValidationError') {
+        return res.status(400).json({
+          message: err.message,
+        });
+      }
+      return res.status(500).json({
         status: res.statusCode,
         message: 'There was a problem on our side.',
       });
-      return;
     }
 
-    res.status(201).json({
-      message: 'Successfully inserted a new user to the collection',
+    return res.status(201).json({
+      message: 'Successfully registered a new account!',
     });
   });
 }

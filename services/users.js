@@ -1,3 +1,4 @@
+const Joi = require('joi');
 const User = require('../models/User');
 
 const projection = {
@@ -21,6 +22,12 @@ const getUserByUsername = (username, callback) => {
 };
 
 const registerNewUser = (payload, callback) => {
+  const validation = Joi.validate(payload, User.validationSchema);
+
+  if (validation.error) {
+    return callback(validation.error, null);
+  }
+
   const user = new User({
     username: payload.username,
     email: payload.email,
@@ -28,7 +35,7 @@ const registerNewUser = (payload, callback) => {
     img_url: payload.img_url || '',
   });
 
-  user.save((err, product) => {
+  return user.save((err, product) => {
     if (err) return callback(err, null);
     return callback(null, product);
   });
