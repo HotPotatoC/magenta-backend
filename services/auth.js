@@ -29,15 +29,10 @@ const login = (email, password) => {
 };
 
 const checkToken = (token, callback) => {
-  jwt.verify(
-    token,
-    process.env.ACCESS_TOKEN_KEY,
-    { clockTimestamp: new Date().getTime() },
-    (err, decoded) => {
-      if (err) return callback(err, null);
-      return callback(null, decoded);
-    }
-  );
+  jwt.verify(token, process.env.ACCESS_TOKEN_KEY, (err, decoded) => {
+    if (err) return callback(err, null);
+    return callback(null, decoded);
+  });
 };
 
 module.exports = {
