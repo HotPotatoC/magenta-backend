@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Validate = require('../validation/auth');
 
 const projection = {
   _id: 0,
@@ -20,17 +21,28 @@ const getUserByUsername = (username, callback) => {
   });
 };
 
-const registerNewUser = (payload, callback) => {
-  const user = new User({
-    username: payload.username,
-    email: payload.email,
-    password: payload.password,
-    img_url: payload.img_url || '',
-  });
+const registerNewUser = (payload) => {
+  return new Promise((resolve, reject) => {
+    const validation = Validate.validateRegister(
+      payload,
+      User.validationSchema
+    );
 
-  user.save((err, product) => {
-    if (err) return callback(err, null);
-    return callback(null, product);
+    if (validation.error) {
+      return reject(validation.error);
+    }
+
+    const user = new User({
+      username: payload.username,
+      email: payload.email,
+      password: payload.password,
+      img_url: payload.img_url || '',
+    });
+
+    return user.save((err, product) => {
+      if (err) return reject(err);
+      return resolve(product);
+    });
   });
 };
 

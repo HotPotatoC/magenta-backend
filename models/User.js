@@ -10,6 +10,8 @@ const schema = new mongoose.Schema(
       type: String,
       required: [true, 'Cannot be blank'],
       match: [/^[a-zA-Z0-9]+$/, 'is invalid'],
+      min: 6,
+      max: 24,
       unique: true,
       index: true,
     },
@@ -23,6 +25,8 @@ const schema = new mongoose.Schema(
     password: {
       type: String,
       required: [true, 'Cannot be blank'],
+      min: 6,
+      max: 1024,
     },
     img_url: {
       type: String,

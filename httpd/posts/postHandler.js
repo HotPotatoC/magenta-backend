@@ -1,97 +1,83 @@
 const services = require('../../services');
 
-const getPostsHandler = (req, res) => {
-  services.posts.getAllPosts((err, docs) => {
-    if (err) {
-      console.log(err);
-      res.status(500).json({
-        status: res.statusCode,
-        message: 'There was a problem on our side.',
-      });
-      return;
-    }
+async function getPostsHandler(req, res) {
+  try {
+    const posts = await services.posts.getAllPosts();
 
-    res.status(200).json({
-      docs,
+    return res.status(200).json(posts);
+  } catch (error) {
+    return res.status(500).json({
+      status: res.statusCode,
+      message: 'There was a problem on our side.',
     });
-  });
-};
+  }
+}
 
-const getSinglePostHandler = (req, res) => {
+async function getSinglePostHandler(req, res) {
   const postId = req.params.id;
 
-  services.posts.getSinglePost(postId, (err, docs) => {
-    if (err) {
-      console.log(err);
-      res.status(500).json({
-        status: res.statusCode,
-        message: 'There was a problem on our side.',
-      });
-      return;
-    }
+  try {
+    const post = await services.posts.getSinglePost(postId);
+    return res.status(200).json(post);
+  } catch (error) {
+    return res.status(500).json({
+      status: res.statusCode,
+      message: 'There was a problem on our side.',
+    });
+  }
+}
 
-    res.status(200).json(docs);
-  });
-};
-
-const createPostHandler = (req, res) => {
+async function createPostHandler(req, res) {
   const payload = {
     user_id: req.session.user._id,
     ...req.body,
   };
+  try {
+    await services.posts.createPost(payload);
 
-  services.posts.createPost(payload, (err) => {
-    if (err) {
-      res.status(400).json({
-        status: res.statusCode,
-        message: err.message,
-      });
-      return;
-    }
-
-    res.status(201).json({
+    return res.status(201).json({
       message: 'Successfully inserted a new post to the collection',
     });
-  });
-};
+  } catch (error) {
+    return res.status(400).json({
+      status: res.statusCode,
+      message: error.message,
+    });
+  }
+}
 
-const updatePostHandler = (req, res) => {
+async function updatePostHandler(req, res) {
   const postId = req.params.id;
   const payload = req.body;
 
-  services.posts.updatePost(postId, payload, (err) => {
-    if (err) {
-      res.status(400).json({
-        status: res.statusCode,
-        message: err.message,
-      });
-      return;
-    }
-
-    res.status(200).json({
+  try {
+    await services.posts.updatePost(postId, payload);
+    return res.status(200).json({
       message: 'Successfully updated post',
     });
-  });
-};
+  } catch (error) {
+    return res.status(400).json({
+      status: res.statusCode,
+      message: error.message,
+    });
+  }
+}
 
-const deletePostHandler = (req, res) => {
+async function deletePostHandler(req, res) {
   const postId = req.params.id;
 
-  services.posts.deletePost(postId, (err, result) => {
-    if (err) {
-      console.log(err);
-      res.status(500).json({
-        status: res.statusCode,
-        message: 'There was a problem on our side.',
-      });
-      return;
-    }
-
-    res.status(200).json({
-      msg: `Successfully deleted ${result.deletedCount} data`,
+  try {
+    const { deletedCount } = await services.posts.deletePost(postId);
+    return res.status(200).json({
+      msg: `Successfully deleted ${deletedCount} data`,
     });
-  });
-};
+  } catch (error) {
+    return res.status(500).json({
+      status: res.statusCode,
+      message: 'There was a problem on our side.',
+    });
+  }
+}
 
 module.exports = {
   getPostsHandler,

@@ -7,7 +7,8 @@
     "lint": "./node_modules/.bin/eslint .",
     "lint:fix": "npm run lint -- --fix",
     "start": "node ./server.js",
-    "start:dev": "clear && nodemon ./server.js"
+    "start:dev": "cls && nodemon ./server.js",
+    "test": "./node_modules/mocha/bin/mocha"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +16,7 @@
   "dependencies": {
     "bcrypt": "^4.0.1",
     "body-parser": "^1.19.0",
+    "chalk": "^4.0.0",
     "compression": "^1.7.4",
     "connect-redis": "^4.0.4",
     "cors": "^2.8.5",
@@ -22,6 +24,7 @@
     "express": "^4.17.1",
     "express-jwt": "^5.3.1",
     "express-session": "^1.17.0",
+    "joi": "^14.3.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.7",
     "mongoose-unique-validator": "^2.0.3",
@@ -35,6 +38,7 @@
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-prettier": "^3.1.2",
+    "mocha": "^7.1.1",
     "prettier": "^2.0.2"
   }
 }

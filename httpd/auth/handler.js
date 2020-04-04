@@ -1,85 +1,107 @@
 const config = require('../../config');
 const services = require('../../services');
 
-const loginHandler = (req, res) => {
+async function loginHandler(req, res) {
   const { email, password } = req.body;
 
-  services.auth
-    .login(email, password)
-    .then(({ token, user, status }) => {
-      req.session.user = user;
-      req.session.token = token;
+  try {
+    const { token, user, status } = await services.auth.login(email, password);
+    req.session.user = user;
+    req.session.token = token;
 
-      res.status(status).json({
-        message: 'Successfully logged in',
-        user: {
-          id: user._id,
-          username: user.username,
-          email: user.email,
-          img_url: user.img_url,
-        },
-        token,
-        expiresIn: config.jwt.options.expiresIn,
-      });
-    })
-    .catch(({ err, status }) => {
-      if (status === 500) {
-        console.log(err);
-        res.status(status).json({
-          status: res.statusCode,
-          message: 'There was a problem on our side.',
-        });
-        return;
-      }
-
-      res.status(status).json({
-        msg: 'Unauthorized user please login to proceed',
-      });
+    return res.status(status).json({
+      message: 'Successfully logged in',
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        img_url: user.img_url,
+      },
+      token,
+      expiresIn: config.jwt.options.expiresIn,
     });
-};
+  } catch (error) {
+    if (error.status === 400) {
+      const detail = error.err.details[0];
+      return res.status(400).json({
+        message: detail.message,
+        context: detail.context,
+      });
+    }
 
-const registerHandler = (req, res) => {
-  const payload = req.body;
-
-  services.users.registerNewUser(payload, (err) => {
-    if (err) {
-      console.log(err);
-      res.status(500).json({
+    if (error.status === 500) {
+      return res.status(500).json({
         status: res.statusCode,
         message: 'There was a problem on our side.',
       });
-      return;
     }
 
-    res.status(201).json({
-      message: 'Successfully inserted a new user to the collection',
+    return res.status(error.status).json({
+      message: 'Unauthorized user please login to proceed',
     });
-  });
-};
+  }
+}
 
-const checkToken = (req, res) => {
-  const token = req.headers.authorization;
+async function registerHandler(req, res) {
+  const payload = req.body;
 
-  services.auth.checkToken(token, (err, decoded) => {
-    if (err) {
-      if (err.name === 'TokenExpiredError') {
-        return res.status(401).json({
+  try {
+    await services.users.registerNewUser(payload);
+
+    return res.status(201).json({
+      message: 'Successfully registered a new account!',
+    });
+  } catch (error) {
+    if (error.isJoi) {
+      return res.status(400).json({
+        message: error.details[0].message,
+        context: error.details[0].context,
+      });
+    }
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({
+        message: error.message,
+      });
+    }
+
+    return res.status(500).json({
+      status: res.statusCode,
+      message: 'There was a problem on our side.',
+    });
+  }
+}
+
+async function checkToken(req, res) {
+  if (req.headers.authorization) {
+    const token = req.headers.authorization.split(' ')[1];
+
+    try {
+      const decoded = await services.auth.checkToken(token);
+
+      return res.status(200).json({
+        userId: decoded.userId,
+        username: decoded.username,
+        email: decoded.email,
+        msg: 'Token still valid',
+      });
+    } catch (error) {
+      if (error.name === 'TokenExpiredError') {
+        return res.status(403).json({
           msg: 'Login session has expired please login',
-          expiredAt: err.expiredAt,
+          expiredAt: error.expiredAt,
         });
       }
       return res.status(401).json({
         msg: 'Unauthorized user please login to proceed',
-        err,
+        error,
       });
     }
-
-    return res.status(200).json({
-      user_id: decoded.userId,
-      msg: 'Token still valid',
+  } else {
+    return res.status(401).json({
+      msg: 'Unauthorized user please login to proceed',
     });
-  });
-};
+  }
+}
 
 module.exports = {
   loginHandler,

@@ -1,54 +1,44 @@
 const services = require('../../services');
 
-const getCommentsByPostHandler = (req, res) => {
+async function getCommentsByPostHandler(req, res) {
   const postId = req.params.id;
 
-  services.comments.getCommentsByPostId(postId, (err, docs) => {
-    if (err) {
-      console.log(err);
-      res.status(500).json({
-        status: res.statusCode,
-        message: 'There was a problem on our side.',
-      });
-      return;
-    }
+  try {
+    const comments = await services.comments.getCommentsByPostId(postId);
 
-    res.status(200).json(docs);
-  });
-};
+    return res.status(200).json(comments);
+  } catch (error) {
+    return res.status(500).json({
+      status: res.statusCode,
+      message: 'There was a problem on our side.',
+    });
+  }
+}
 
-const createCommentHandler = (req, res) => {
-  const token = req.headers.authorization;
+async function createCommentHandler(req, res) {
+  const token = req.headers.authorization.split(' ')[1];
 
-  services.auth.checkToken(token, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({
-        msg: 'Login session has expired please login',
-        expiredAt: err.expiredAt,
-      });
-    }
+  try {
+    const { userId } = await services.auth.checkToken(token);
 
     const payload = {
-      user_id: decoded.userId,
+      user_id: userId,
       post_id: req.params.id,
       body: req.body.body,
     };
 
-    return services.comments.createComment(payload, (_err) => {
-      if (_err) {
-        res.status(400).json({
-          status: res.statusCode,
-          message: _err.message,
-        });
-        return;
-      }
+    await services.comments.createComment(payload);
 
-      res.status(201).json({
-        message: `Successfully added a new comment to the post id(${req.params.id})`,
-      });
+    return res.status(201).json({
+      message: `Successfully added a new comment to the post id(${req.params.id})`,
     });
-  });
-};
+  } catch (error) {
+    return res.status(400).json({
+      status: res.statusCode,
+      message: error.message,
+    });
+  }
+}
 
 module.exports = {
   getCommentsByPostHandler,

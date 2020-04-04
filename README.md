@@ -81,6 +81,7 @@ Prettier Configurations
 - [Redis](https://github.com/NodeRedis/node-redis)
 - [Jsonwebtoken](https://github.com/auth0/node-jsonwebtoken#readme)
 - [Bcrypt](https://github.com/kelektiv/node.bcrypt.js#readme)
+- [Joi](https://www.npmjs.com/package/joi)
 - [Eslint](https://eslint.org/)
 - [Eslint Airbnb](https://github.com/airbnb/javascript)
 - [Prettier](https://prettier.io/)
