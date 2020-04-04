@@ -1,55 +1,60 @@
 const Post = require('../models/Post');
-// const Comment = require('../models/Comment');
 
-const getAllPosts = (callback) => {
-  Post.find({})
-    .populate('comments')
-    .exec((err, res) => {
-      if (err) return callback(err, null);
-      return callback(null, res);
-    });
+function getAllPosts() {
+  return new Promise((resolve, reject) => {
+    Post.find({})
+      .populate('comments')
+      .exec((err, res) => {
+        if (err) return reject(err);
+        return resolve(res);
+      });
+  });
+}
+
+const getSinglePost = (id) => {
+  return new Promise((resolve, reject) => {
+    Post.findById(id)
+      .populate('comments')
+      .exec((err, res) => {
+        if (err) return reject(err);
+        return resolve(res);
+      });
+  });
 };
 
-const getSinglePost = (id, callback) => {
-  Post.findById(id)
-    .populate('comments')
-    .exec((err, res) => {
-      if (err) return callback(err, null);
-      return callback(null, res);
-    });
-};
-
-const createPost = (payload, callback) => {
+const createPost = (payload) => {
   const post = new Post({
     user_id: payload.user_id,
     body: payload.body,
   });
 
-  post.save((err, product) => {
-    if (err) return callback(err, null);
-    return callback(null, product);
+  return new Promise((resolve, reject) => {
+    post.save((err, product) => {
+      if (err) return reject(err);
+      return resolve(product);
+    });
   });
 };
 
-const updatePost = (id, payload, callback) => {
-  const query = Post.findOneAndUpdate(
-    { _id: id },
-    { body: payload.body },
-    { upsert: true }
-  );
-
-  query.exec((err, result) => {
-    if (err) return callback(err, null);
-    return callback(null, result);
+const updatePost = (id, payload) => {
+  return new Promise((resolve, reject) => {
+    Post.findOneAndUpdate(
+      { _id: id },
+      { body: payload.body },
+      { upsert: true }
+    ).exec((err, result) => {
+      if (err) return reject(err);
+      return resolve(result);
+    });
   });
 };
 
-const deletePost = (id, callback) => {
-  const query = Post.deleteOne({ _id: id });
-
-  query.exec((err, result) => {
-    if (err) return callback(err, null);
-    return callback(null, result);
+const deletePost = (id) => {
+  return new Promise((resolve, reject) => {
+    Post.deleteOne({ _id: id }).exec((err, result) => {
+      if (err) return reject(err);
+      return resolve(result);
+    });
   });
 };
 
