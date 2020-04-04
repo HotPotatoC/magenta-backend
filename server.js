@@ -1,12 +1,13 @@
-const mongoose = require('mongoose');
 const chalk = require('chalk');
+
+console.time(chalk.greenBright('Connected to database!'));
+console.time(chalk.greenBright('Server Has Started!'));
+
+const mongoose = require('mongoose');
 const server = require('./config/express');
 
 const port = process.env.PORT;
 const config = require('./config');
-
-console.time(chalk.greenBright('Connected to database!'));
-console.time(chalk.greenBright('Server Has Started!'));
 
 mongoose.set('useCreateIndex', true);
 
