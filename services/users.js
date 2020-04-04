@@ -1,5 +1,5 @@
-const Joi = require('joi');
 const User = require('../models/User');
+const Validate = require('../validation/auth');
 
 const projection = {
   _id: 0,
@@ -23,7 +23,10 @@ const getUserByUsername = (username, callback) => {
 
 const registerNewUser = (payload) => {
   return new Promise((resolve, reject) => {
-    const validation = Joi.validate(payload, User.validationSchema);
+    const validation = Validate.validateRegister(
+      payload,
+      User.validationSchema
+    );
 
     if (validation.error) {
       return reject(validation.error);

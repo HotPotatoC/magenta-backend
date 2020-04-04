@@ -1,16 +1,12 @@
 const jwt = require('jsonwebtoken');
-const Joi = require('joi');
 const User = require('../models/User');
+const { validateLogin } = require('../validation/auth');
 const config = require('../config');
 
 /* eslint-disable consistent-return */
 const login = (email, password) => {
   return new Promise((resolve, reject) => {
-    const validationSchema = Joi.object().keys({
-      email: Joi.string().email().required(),
-      password: Joi.string().min(6).max(1024).required(),
-    });
-    const validation = Joi.validate({ email, password }, validationSchema);
+    const validation = validateLogin({ email, password });
 
     if (validation.error) {
       return reject({ err: validation.error, status: 400 });
