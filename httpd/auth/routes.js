@@ -5,7 +5,4 @@ router.post('/login', handler.loginHandler);
 router.post('/register', handler.registerHandler);
 router.get('/checktoken', handler.checkToken);
 
-module.exports = {
-  path: '/auth',
-  router,
-};
+module.exports = router;

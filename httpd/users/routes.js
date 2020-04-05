@@ -8,7 +8,4 @@ router.post('/', tokenMiddleware, handler.registerUserHandler);
 router.put('/:username', tokenMiddleware, handler.updateUserHandler);
 router.delete('/:username', tokenMiddleware, handler.deleteUserHandler);
 
-module.exports = {
-  path: '/users',
-  router,
-};
+module.exports = router;

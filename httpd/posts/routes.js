@@ -21,7 +21,4 @@ router.post(
   commentHandler.createCommentHandler
 );
 
-module.exports = {
-  path: '/posts',
-  router,
-};
+module.exports = router;
