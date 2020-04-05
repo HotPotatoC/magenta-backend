@@ -1,24 +1,11 @@
-const isProduction = process.env.NODE_ENV === 'production';
+require('module-alias/register');
 
-module.exports = {
-  database: {
-    uri: isProduction ? process.env.MONGOLAB_URI : process.env.MONGODB_URI,
-    options: {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      dbName: process.env.MONGODB_NAME,
-    },
-  },
-  redis: {
-    unix_socket: isProduction
-      ? process.env.REDISCLOUD_URL
-      : process.env.REDIS_URL,
-    options: {
-      no_ready_check: true,
-      password: isProduction ? process.env.REDISCLOUD_PASS : '',
-    },
-  },
+const path = require('path');
+const development = require('@config/env/development');
+const production = require('@config/env/production');
+
+const defaults = {
+  root: path.normalize(path.join(__dirname, '/..')),
   jwt: {
     options: {
       algorithm: 'HS256',
@@ -26,3 +13,8 @@ module.exports = {
     },
   },
 };
+
+module.exports = {
+  development: { ...development, ...defaults },
+  production: { ...production, ...defaults },
+}[process.env.NODE_ENV || 'development'];
