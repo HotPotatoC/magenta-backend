@@ -1,5 +1,7 @@
-const User = require('../models/User');
-const Validate = require('../validation/auth');
+require('module-alias/register');
+
+const User = require('@models/User');
+const Validate = require('@validation/auth');
 
 const projection = {
   _id: 0,

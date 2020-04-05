@@ -6,6 +6,7 @@ module.exports = {
     options: {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      useCreateIndex: true,
       dbName: process.env.MONGODB_NAME,
     },
   },
@@ -21,7 +22,7 @@ module.exports = {
   jwt: {
     options: {
       algorithm: 'HS256',
-      expiresIn: Math.floor(Date.now()) + 60 * 60,
+      expiresIn: '2h',
     },
   },
 };

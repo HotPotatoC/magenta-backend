@@ -1,5 +1,7 @@
-const config = require('../../config');
-const services = require('../../services');
+require('module-alias/register');
+
+const config = require('@config');
+const services = require('@services');
 
 async function loginHandler(req, res) {
   const { email, password } = req.body;
