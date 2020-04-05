@@ -40,7 +40,7 @@ $ npm run lint:fix
 
 ## Code Style
 
-This project uses [Eslint](https://eslint.org/) + [Airbnb](https://github.com/airbnb/javascript) + [Prettier](https://prettier.io/) configuration
+This project code style uses [Eslint](https://eslint.org/) + [Airbnb](https://github.com/airbnb/javascript) + [Prettier](https://prettier.io/) configuration
 
 ```js
 // .eslintrc.js
@@ -71,6 +71,33 @@ Prettier Configurations
   "useTabs": false,
   "singleQuote": true
 }
+```
+
+## Module Aliases
+
+This project implements module aliases using the [module-alias](https://github.com/ilearnio/module-alias) package to ease the usage of imports/requires
+
+Existing aliases:
+
+```javascript
+// package.json
+"_moduleAliases": {
+    "@app": "./",
+    "@config": "./config",
+    "@middlewares": "./middlewares",
+    "@models": "./models",
+    "@httpd": "./httpd",
+    "@services": "./services",
+    "@validation": "./validation"
+  },
+```
+
+e.g
+
+```javascript
+require('module-alias/register');
+
+const config = require('@config/express');
 ```
 
 ## Packages And Tools
