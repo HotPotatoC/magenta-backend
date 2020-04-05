@@ -6,6 +6,7 @@ module.exports = {
     options: {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      useCreateIndex: true,
       dbName: process.env.MONGODB_NAME,
     },
   },
