@@ -34,6 +34,7 @@ async function createPostHandler(req, res) {
     user_id: req.session.user._id,
     ...req.body,
   };
+
   try {
     await services.posts.createPost(payload);
 
