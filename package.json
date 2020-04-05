@@ -4,20 +4,20 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node ./server.js",
-    "start:dev": "cls && nodemon ./server.js",
-    "lint": "./node_modules/.bin/eslint .",
+    "start": "node ./src/server.js",
+    "start:dev": "cls && nodemon ./src/server.js",
+    "lint": "./node_modules/.bin/eslint ./src",
     "lint:fix": "npm run lint -- --fix",
     "test": "./node_modules/mocha/bin/mocha"
   },
   "_moduleAliases": {
-    "@app": "./",
-    "@config": "./config",
-    "@middlewares": "./middlewares",
-    "@models": "./models",
-    "@httpd": "./httpd",
-    "@services": "./services",
-    "@validation": "./validation"
+    "@app": "./src/",
+    "@config": "./src/config",
+    "@middlewares": "./src/middlewares",
+    "@models": "./src/models",
+    "@httpd": "./src/httpd",
+    "@services": "./src/services",
+    "@validation": "./src/validation"
   },
   "keywords": [],
   "author": "HotPotatoC",
