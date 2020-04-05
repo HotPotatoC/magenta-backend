@@ -11,9 +11,7 @@ module.exports = {
     },
   },
   redis: {
-    unix_socket: isProduction
-      ? process.env.REDISCLOUD_URL
-      : process.env.REDIS_URL,
+    unix_socket: process.env.REDISCLOUD_URL,
     options: {
       no_ready_check: true,
       password: isProduction ? process.env.REDISCLOUD_PASS : '',
