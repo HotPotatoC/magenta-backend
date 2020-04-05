@@ -109,6 +109,7 @@ const config = require('@config/express');
 - [Jsonwebtoken](https://github.com/auth0/node-jsonwebtoken#readme)
 - [Bcrypt](https://github.com/kelektiv/node.bcrypt.js#readme)
 - [Joi](https://www.npmjs.com/package/joi)
+- [module-alias](https://github.com/ilearnio/module-alias)
 - [Eslint](https://eslint.org/)
 - [Eslint Airbnb](https://github.com/airbnb/javascript)
 - [Prettier](https://prettier.io/)
