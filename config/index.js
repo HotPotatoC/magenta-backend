@@ -1,4 +1,5 @@
 require('module-alias/register');
+
 const path = require('path');
 const development = require('@config/env/development');
 const production = require('@config/env/production');
