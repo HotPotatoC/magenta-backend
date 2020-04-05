@@ -2,7 +2,7 @@
   "name": "social-media",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node ./server.js",
     "start:dev": "cls && nodemon ./server.js",
@@ -20,7 +20,7 @@
     "@validation": "./validation"
   },
   "keywords": [],
-  "author": "",
+  "author": "HotPotatoC",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^4.0.1",
