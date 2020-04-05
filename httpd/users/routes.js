@@ -1,6 +1,8 @@
+require('module-alias/register');
+
 const router = require('express').Router();
-const tokenMiddleware = require('../../middlewares/tokenMiddleware');
-const handler = require('./handler');
+const tokenMiddleware = require('@middlewares/tokenMiddleware');
+const handler = require('@httpd/users/handler');
 
 router.get('/', tokenMiddleware, handler.getUsersHandler);
 router.get('/:username', tokenMiddleware, handler.getOneUserHandler);

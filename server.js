@@ -1,13 +1,16 @@
+require('module-alias/register');
+
+require('dotenv').config();
 const chalk = require('chalk');
 
 console.time(chalk.greenBright('Connected to database!'));
 console.time(chalk.greenBright('Server Has Started!'));
 
 const mongoose = require('mongoose');
-const server = require('./config/express');
+const server = require('@config/express');
 
 const port = process.env.PORT;
-const config = require('./config');
+const config = require('@config');
 
 mongoose.set('useCreateIndex', true);
 

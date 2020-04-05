@@ -1,7 +1,10 @@
+require('module-alias/register');
+
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const { validateLogin } = require('../validation/auth');
-const config = require('../config');
+
+const User = require('@models/User');
+const { validateLogin } = require('@validation/auth');
+const config = require('@config');
 
 /* eslint-disable consistent-return */
 const login = (email, password) => {

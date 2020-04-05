@@ -1,4 +1,6 @@
-const services = require('../../services');
+require('module-alias/register');
+
+const services = require('@services');
 
 async function getCommentsByPostHandler(req, res) {
   const postId = req.params.id;

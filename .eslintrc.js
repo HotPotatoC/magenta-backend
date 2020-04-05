@@ -21,6 +21,7 @@ module.exports = {
     'func-names': 'off',
     'no-console': 'off',
     'import/no-dynamic-require': 'off',
+    'import/no-unresolved': 'off',
     'prettier/prettier': [
       'error',
       {
