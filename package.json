@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "./node_modules/.bin/eslint .",
-    "lint:fix": "npm run lint -- --fix",
     "start": "node ./server.js",
     "start:dev": "cls && nodemon ./server.js",
+    "lint": "./node_modules/.bin/eslint .",
+    "lint:fix": "npm run lint -- --fix",
     "test": "./node_modules/mocha/bin/mocha"
   },
   "keywords": [],
