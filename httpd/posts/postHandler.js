@@ -29,6 +29,34 @@ async function getSinglePostHandler(req, res) {
   }
 }
 
+async function searchPostHandler(req, res) {
+  if (req.query.q) {
+    const search = req.query.q;
+
+    try {
+      const post = await services.posts.searchPost(search);
+
+      if (post.length < 1) {
+        return res.status(404).json({
+          empty: true,
+          message: `We couldn't find anything for ${search}`,
+        });
+      }
+
+      return res.status(200).json({
+        empty: false,
+        result: post,
+      });
+    } catch (error) {
+      return res.status(400).json(error);
+    }
+  } else {
+    return res.status(400).json({
+      message: 'Please provide a search query',
+    });
+  }
+}
+
 async function createPostHandler(req, res) {
   const payload = {
     user_id: req.session.user._id,
@@ -85,6 +113,7 @@ async function deletePostHandler(req, res) {
 module.exports = {
   getPostsHandler,
   getSinglePostHandler,
+  searchPostHandler,
   createPostHandler,
   updatePostHandler,
   deletePostHandler,
