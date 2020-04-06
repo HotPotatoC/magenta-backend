@@ -84,23 +84,23 @@ async function checkToken(req, res) {
         userId: decoded.userId,
         username: decoded.username,
         email: decoded.email,
-        msg: 'Token still valid',
+        message: 'Token still valid',
       });
     } catch (error) {
       if (error.name === 'TokenExpiredError') {
         return res.status(403).json({
-          msg: 'Login session has expired please login',
+          message: 'Login session has expired please login',
           expiredAt: error.expiredAt,
         });
       }
       return res.status(401).json({
-        msg: 'Unauthorized user please login to proceed',
+        message: 'Unauthorized user please login to proceed',
         error,
       });
     }
   } else {
     return res.status(401).json({
-      msg: 'Unauthorized user please login to proceed',
+      message: 'Unauthorized user please login to proceed',
     });
   }
 }
