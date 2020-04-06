@@ -24,6 +24,19 @@ const getSinglePost = (id) => {
   });
 };
 
+const searchPost = (query) => {
+  const search = new RegExp(query, 'i');
+
+  return new Promise((resolve, reject) => {
+    Post.find({ body: search })
+      .populate('comments')
+      .exec((err, res) => {
+        if (err) return reject(err);
+        return resolve(res);
+      });
+  });
+};
+
 const createPost = (payload) => {
   const post = new Post({
     user_id: payload.user_id,
@@ -63,6 +76,7 @@ const deletePost = (id) => {
 module.exports = {
   getAllPosts,
   getSinglePost,
+  searchPost,
   createPost,
   updatePost,
   deletePost,

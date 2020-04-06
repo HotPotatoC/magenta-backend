@@ -25,6 +25,7 @@ async function loginHandler(req, res) {
   } catch (error) {
     if (error.status === 400) {
       const detail = error.err.details[0];
+
       return res.status(400).json({
         message: detail.message,
         context: detail.context,
@@ -81,26 +82,33 @@ async function checkToken(req, res) {
       const decoded = await services.auth.checkToken(token);
 
       return res.status(200).json({
-        userId: decoded.userId,
-        username: decoded.username,
-        email: decoded.email,
-        msg: 'Token still valid',
+        valid: true,
+        message: 'Token still valid',
+        payload: {
+          userId: decoded.userId,
+          username: decoded.username,
+          email: decoded.email,
+        },
       });
     } catch (error) {
       if (error.name === 'TokenExpiredError') {
         return res.status(403).json({
-          msg: 'Login session has expired please login',
+          valid: false,
+          message: 'Login session has expired please login',
           expiredAt: error.expiredAt,
         });
       }
+
       return res.status(401).json({
-        msg: 'Unauthorized user please login to proceed',
+        valid: false,
+        message: 'Unauthorized user please login to proceed',
         error,
       });
     }
   } else {
     return res.status(401).json({
-      msg: 'Unauthorized user please login to proceed',
+      valid: false,
+      message: 'Unauthorized user please login to proceed',
     });
   }
 }
