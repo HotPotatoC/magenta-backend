@@ -97,6 +97,7 @@ async function checkToken(req, res) {
           expiredAt: error.expiredAt,
         });
       }
+
       return res.status(401).json({
         valid: false,
         message: 'Unauthorized user please login to proceed',
