@@ -25,6 +25,7 @@ async function loginHandler(req, res) {
   } catch (error) {
     if (error.status === 400) {
       const detail = error.err.details[0];
+
       return res.status(400).json({
         message: detail.message,
         context: detail.context,
