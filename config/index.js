@@ -8,7 +8,6 @@ const defaults = {
   root: path.normalize(path.join(__dirname, '/..')),
   jwt: {
     options: {
-      algorithm: 'HS256',
       expiresIn: '2h',
     },
   },
