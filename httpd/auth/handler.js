@@ -81,25 +81,31 @@ async function checkToken(req, res) {
       const decoded = await services.auth.checkToken(token);
 
       return res.status(200).json({
-        userId: decoded.userId,
-        username: decoded.username,
-        email: decoded.email,
+        valid: true,
         message: 'Token still valid',
+        payload: {
+          userId: decoded.userId,
+          username: decoded.username,
+          email: decoded.email,
+        },
       });
     } catch (error) {
       if (error.name === 'TokenExpiredError') {
         return res.status(403).json({
+          valid: false,
           message: 'Login session has expired please login',
           expiredAt: error.expiredAt,
         });
       }
       return res.status(401).json({
+        valid: false,
         message: 'Unauthorized user please login to proceed',
         error,
       });
     }
   } else {
     return res.status(401).json({
+      valid: false,
       message: 'Unauthorized user please login to proceed',
     });
   }
