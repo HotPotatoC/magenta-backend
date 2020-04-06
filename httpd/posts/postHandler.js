@@ -20,6 +20,7 @@ async function getSinglePostHandler(req, res) {
 
   try {
     const post = await services.posts.getSinglePost(postId);
+
     return res.status(200).json(post);
   } catch (error) {
     return res.status(500).json({
@@ -83,6 +84,7 @@ async function updatePostHandler(req, res) {
 
   try {
     await services.posts.updatePost(postId, payload);
+
     return res.status(200).json({
       message: 'Successfully updated post',
     });
@@ -99,6 +101,7 @@ async function deletePostHandler(req, res) {
 
   try {
     const { deletedCount } = await services.posts.deletePost(postId);
+
     return res.status(200).json({
       msg: `Successfully deleted ${deletedCount} data`,
     });
