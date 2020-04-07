@@ -4,7 +4,7 @@ const services = require('@services');
 
 async function getPostsHandler(req, res) {
   try {
-    const posts = await services.posts.getAllPosts();
+    const posts = await services.posts.getAllPosts(req.query);
 
     return res.status(200).json(posts);
   } catch (error) {

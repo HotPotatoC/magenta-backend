@@ -1,16 +1,43 @@
 require('module-alias/register');
 
-const Post = require('@models/Post');
+const { objectIsEmpty } = require('@utils');
+const Post = require('../models/Post');
 
-function getAllPosts() {
-  return new Promise((resolve, reject) => {
-    Post.find({})
-      .populate('comments')
-      .exec((err, res) => {
-        if (err) return reject(err);
-        return resolve(res);
-      });
-  });
+function getAllPosts(filter = null) {
+  if (objectIsEmpty(filter)) {
+    return new Promise((resolve, reject) => {
+      Post.find({})
+        .populate('comments')
+        .exec((err, res) => {
+          if (err) return reject(err);
+          return resolve(res);
+        });
+    });
+  }
+
+  if (filter.sortBy && filter.sortBy === 'most-popular') {
+    return new Promise((resolve, reject) => {
+      Post.find({})
+        .populate('comments')
+        .sort({ likes: -1 })
+        .exec((err, res) => {
+          if (err) return reject(err);
+          return resolve(res);
+        });
+    });
+  }
+
+  if (filter.sortBy && filter.sortBy === 'most-recent') {
+    return new Promise((resolve, reject) => {
+      Post.find({})
+        .populate('comments')
+        .sort({ createdAt: -1 })
+        .exec((err, res) => {
+          if (err) return reject(err);
+          return resolve(res);
+        });
+    });
+  }
 }
 
 function getSinglePost(id) {
