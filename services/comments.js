@@ -3,16 +3,16 @@ require('module-alias/register');
 const Comment = require('@models/Comment');
 const Post = require('@models/Post');
 
-const getCommentsByPostId = (postId) => {
+function getCommentsByPostId(postId) {
   return new Promise((resolve, reject) => {
     Comment.find({ post_id: postId }, (err, docs) => {
       if (err) return reject(err);
       return resolve(docs);
     });
   });
-};
+}
 
-const createComment = (payload) => {
+function createComment(payload) {
   const comment = new Comment({
     user_id: payload.user_id,
     post_id: payload.post_id,
@@ -35,7 +35,7 @@ const createComment = (payload) => {
       }
     });
   });
-};
+}
 
 module.exports = {
   getCommentsByPostId,

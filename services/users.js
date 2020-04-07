@@ -9,21 +9,21 @@ const projection = {
   password: 0,
 };
 
-const getUsers = (callback) => {
+function getUsers(callback) {
   User.find({}, projection, (err, docs) => {
     if (err) return callback(err, null);
     return callback(null, docs);
   });
-};
+}
 
-const getUserByUsername = (username, callback) => {
+function getUserByUsername(username, callback) {
   User.findOne({ username }, projection, (err, doc) => {
     if (err) return callback(err, null);
     return callback(null, doc);
   });
-};
+}
 
-const registerNewUser = (payload) => {
+function registerNewUser(payload) {
   return new Promise((resolve, reject) => {
     const validation = Validate.validateRegister(
       payload,
@@ -46,9 +46,9 @@ const registerNewUser = (payload) => {
       return resolve(product);
     });
   });
-};
+}
 
-const updateUserByUsername = (username, payload, callback) => {
+function updateUserByUsername(username, payload, callback) {
   const query = User.findOneAndUpdate(
     { username },
     { username: payload.username },
@@ -59,16 +59,16 @@ const updateUserByUsername = (username, payload, callback) => {
     if (err) return callback(err, null);
     return callback(null, result);
   });
-};
+}
 
-const deleteUserByUsername = (username, callback) => {
+function deleteUserByUsername(username, callback) {
   const query = User.deleteOne({ username });
 
   query.exec((err, result) => {
     if (err) return callback(err, null);
     return callback(null, result);
   });
-};
+}
 
 module.exports = {
   getUsers,
