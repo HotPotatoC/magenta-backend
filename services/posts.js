@@ -1,43 +1,28 @@
 require('module-alias/register');
 
-const { objectIsEmpty } = require('@utils');
-const Post = require('../models/Post');
+const Post = require('@models/Post');
 
 function getAllPosts(filter = null) {
-  if (objectIsEmpty(filter)) {
-    return new Promise((resolve, reject) => {
-      Post.find({})
-        .populate('comments')
-        .exec((err, res) => {
-          if (err) return reject(err);
-          return resolve(res);
-        });
-    });
-  }
+  return new Promise((resolve, reject) => {
+    let query = Post.find({}).populate('comments');
 
-  if (filter.sortBy && filter.sortBy === 'most-popular') {
-    return new Promise((resolve, reject) => {
-      Post.find({})
-        .populate('comments')
-        .sort({ likes: -1 })
-        .exec((err, res) => {
-          if (err) return reject(err);
-          return resolve(res);
-        });
-    });
-  }
+    if (filter.noComments && filter.noComments === '1') {
+      query = Post.find({}, { comments: 0 });
+    }
 
-  if (filter.sortBy && filter.sortBy === 'most-recent') {
-    return new Promise((resolve, reject) => {
-      Post.find({})
-        .populate('comments')
-        .sort({ createdAt: -1 })
-        .exec((err, res) => {
-          if (err) return reject(err);
-          return resolve(res);
-        });
+    if (filter.sort && filter.sort === 'most-popular') {
+      query = query.sort({ likes: -1 });
+    }
+
+    if (filter.sort && filter.sort === 'most-recent') {
+      query = query.sort({ createdAt: -1 });
+    }
+
+    return query.exec((err, res) => {
+      if (err) return reject(err);
+      return resolve(res);
     });
-  }
+  });
 }
 
 function getSinglePost(id) {
