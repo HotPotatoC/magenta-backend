@@ -2,9 +2,10 @@ require('module-alias/register');
 
 const router = require('express').Router();
 const handler = require('@httpd/auth/handler');
+const tokenMiddleware = require('@middlewares/tokenMiddleware');
 
 router.post('/login', handler.loginHandler);
 router.post('/register', handler.registerHandler);
-router.get('/checktoken', handler.checkToken);
+router.get('/checktoken', tokenMiddleware, handler.checkToken);
 
 module.exports = router;
