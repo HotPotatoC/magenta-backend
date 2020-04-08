@@ -1,4 +1,5 @@
 # Magenta Backend
+[![Maintainability](https://api.codeclimate.com/v1/badges/cf84ad8ae3e1c7755d4e/maintainability)](https://codeclimate.com/github/HotPotatoC/magenta-backend/maintainability)
 
 This is the backend repository for magenta social media network
 
