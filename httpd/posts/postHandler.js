@@ -32,15 +32,13 @@ async function getSinglePostHandler(req, res) {
 
 async function searchPostHandler(req, res) {
   if (req.query.q) {
-    const search = req.query.q;
-
     try {
-      const post = await services.posts.searchPost(search);
+      const post = await services.posts.searchPost(req.query.q);
 
       if (post.length < 1) {
         return res.status(404).json({
           empty: true,
-          message: `We couldn't find anything for ${search}`,
+          message: `We couldn't find anything for ${req.query.q}`,
         });
       }
 

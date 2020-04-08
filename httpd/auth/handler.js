@@ -46,10 +46,8 @@ async function loginHandler(req, res) {
 }
 
 async function registerHandler(req, res) {
-  const payload = req.body;
-
   try {
-    await services.users.registerNewUser(payload);
+    await services.users.registerNewUser(req.body);
 
     return res.status(201).json({
       message: 'Successfully registered a new account!',
@@ -75,40 +73,34 @@ async function registerHandler(req, res) {
 }
 
 async function checkToken(req, res) {
-  if (req.headers.authorization) {
-    const token = req.headers.authorization.split(' ')[1];
+  const { authorization } = req.headers;
+  const token = authorization.split(' ')[1];
 
-    try {
-      const decoded = await services.auth.checkToken(token);
+  try {
+    const decoded = await services.auth.checkToken(token);
 
-      return res.status(200).json({
-        valid: true,
-        message: 'Token still valid',
-        payload: {
-          userId: decoded.userId,
-          username: decoded.username,
-          email: decoded.email,
-        },
-      });
-    } catch (error) {
-      if (error.name === 'TokenExpiredError') {
-        return res.status(403).json({
-          valid: false,
-          message: 'Login session has expired please login',
-          expiredAt: error.expiredAt,
-        });
-      }
-
-      return res.status(401).json({
+    return res.status(200).json({
+      valid: true,
+      message: 'Token still valid',
+      payload: {
+        userId: decoded.userId,
+        username: decoded.username,
+        email: decoded.email,
+      },
+    });
+  } catch (error) {
+    if (error.name === 'TokenExpiredError') {
+      return res.status(403).json({
         valid: false,
-        message: 'Unauthorized user please login to proceed',
-        error,
+        message: 'Login session has expired please login',
+        expiredAt: error.expiredAt,
       });
     }
-  } else {
+
     return res.status(401).json({
       valid: false,
       message: 'Unauthorized user please login to proceed',
+      error,
     });
   }
 }
