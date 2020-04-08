@@ -17,6 +17,7 @@
     "@models": "./models",
     "@httpd": "./httpd",
     "@services": "./services",
+    "@utils": "./utils",
     "@validation": "./validation"
   },
   "keywords": [],

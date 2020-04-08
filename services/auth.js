@@ -7,7 +7,7 @@ const { validateLogin } = require('@validation/auth');
 const config = require('@config');
 
 /* eslint-disable consistent-return */
-const login = (email, password) => {
+function login(email, password) {
   return new Promise((resolve, reject) => {
     const validation = validateLogin({ email, password });
 
@@ -36,16 +36,16 @@ const login = (email, password) => {
       });
     });
   });
-};
+}
 
-const checkToken = (token) => {
+function checkToken(token) {
   return new Promise((resolve, reject) => {
     jwt.verify(token, process.env.ACCESS_TOKEN_KEY, (err, decoded) => {
       if (err) return reject(err);
       return resolve(decoded);
     });
   });
-};
+}
 
 module.exports = {
   login,

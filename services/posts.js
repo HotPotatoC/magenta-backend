@@ -2,18 +2,30 @@ require('module-alias/register');
 
 const Post = require('@models/Post');
 
-function getAllPosts() {
+function getAllPosts(filter = null) {
   return new Promise((resolve, reject) => {
-    Post.find({})
-      .populate('comments')
-      .exec((err, res) => {
-        if (err) return reject(err);
-        return resolve(res);
-      });
+    let query = Post.find({}).populate('comments');
+
+    if (filter.noComments && filter.noComments === '1') {
+      query = Post.find({}, { comments: 0 });
+    }
+
+    if (filter.sort && filter.sort === 'most-popular') {
+      query = query.sort({ likes: -1 });
+    }
+
+    if (filter.sort && filter.sort === 'most-recent') {
+      query = query.sort({ createdAt: -1 });
+    }
+
+    return query.exec((err, res) => {
+      if (err) return reject(err);
+      return resolve(res);
+    });
   });
 }
 
-const getSinglePost = (id) => {
+function getSinglePost(id) {
   return new Promise((resolve, reject) => {
     Post.findById(id)
       .populate('comments')
@@ -22,9 +34,9 @@ const getSinglePost = (id) => {
         return resolve(res);
       });
   });
-};
+}
 
-const searchPost = (query) => {
+function searchPost(query) {
   const search = new RegExp(query, 'i');
 
   return new Promise((resolve, reject) => {
@@ -35,9 +47,9 @@ const searchPost = (query) => {
         return resolve(res);
       });
   });
-};
+}
 
-const createPost = (payload) => {
+function createPost(payload) {
   const post = new Post({
     user_id: payload.user_id,
     body: payload.body,
@@ -49,9 +61,9 @@ const createPost = (payload) => {
       return resolve(product);
     });
   });
-};
+}
 
-const updatePost = (id, payload) => {
+function updatePost(id, payload) {
   return new Promise((resolve, reject) => {
     Post.findOneAndUpdate(
       { _id: id },
@@ -62,16 +74,16 @@ const updatePost = (id, payload) => {
       return resolve(result);
     });
   });
-};
+}
 
-const deletePost = (id) => {
+function deletePost(id) {
   return new Promise((resolve, reject) => {
     Post.deleteOne({ _id: id }).exec((err, result) => {
       if (err) return reject(err);
       return resolve(result);
     });
   });
-};
+}
 
 module.exports = {
   getAllPosts,
