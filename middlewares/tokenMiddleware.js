@@ -16,7 +16,7 @@ module.exports = (req, res, next) => {
 
       if (doc.length > 0) {
         return res.status(403).json({
-          msg: 'Login session has expired please login',
+          message: 'Login session has expired please login',
         });
       }
 
@@ -24,12 +24,12 @@ module.exports = (req, res, next) => {
         if (_err) {
           if (_err.name === 'TokenExpiredError') {
             return res.status(403).json({
-              msg: 'Login session has expired please login',
+              message: 'Login session has expired please login',
               expiredAt: _err.expiredAt,
             });
           }
           return res.status(401).json({
-            msg: 'Unauthorized user please login to proceed',
+            message: 'Unauthorized user please login to proceed',
           });
         }
         next();
@@ -37,7 +37,7 @@ module.exports = (req, res, next) => {
     });
   } else {
     return res.status(401).json({
-      msg: 'Unauthorized user please login to proceed',
+      message: 'Unauthorized user please login to proceed',
     });
   }
 };
