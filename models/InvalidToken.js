@@ -12,4 +12,4 @@ const schema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('invalid-token', schema);
+module.exports = mongoose.model('invalidtoken', schema);
