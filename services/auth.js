@@ -50,7 +50,7 @@ function logout(token) {
 
       invalidToken.save((_err, product) => {
         if (_err) return reject(_err);
-        return resolve({ ...product, status: 200 });
+        return resolve({ product, status: 200 });
       });
     });
   });
