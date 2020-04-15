@@ -7,7 +7,6 @@ const InvalidToken = require('@models/InvalidToken');
 const { validateLogin } = require('@validation/auth');
 const config = require('@config');
 
-/* eslint-disable consistent-return */
 function login(email, password) {
   return new Promise((resolve, reject) => {
     const validation = validateLogin({ email, password });
