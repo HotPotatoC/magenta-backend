@@ -3,8 +3,9 @@ const InvalidToken = require('../models/InvalidToken');
 
 /* eslint-disable consistent-return */
 module.exports = (req, res, next) => {
-  if (req.headers.authorization) {
-    const token = req.headers.authorization.split(' ')[1];
+  const { authorization } = req.headers;
+  if (authorization) {
+    const token = authorization.split(' ')[1];
 
     InvalidToken.find({ token }).exec((err, doc) => {
       if (err) {
