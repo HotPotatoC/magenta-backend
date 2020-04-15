@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const User = require('@models/User');
 const { validateLogin } = require('@validation/auth');
 const config = require('@config');
+const InvalidToken = require('../models/InvalidToken');
 
 /* eslint-disable consistent-return */
 function login(email, password) {
@@ -38,6 +39,23 @@ function login(email, password) {
   });
 }
 
+function logout(token) {
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, process.env.ACCESS_TOKEN_KEY, (err, decoded) => {
+      if (err) return reject(err);
+      const invalidToken = new InvalidToken({
+        user_id: decoded.userId,
+        token,
+      });
+
+      invalidToken.save((_err, product) => {
+        if (_err) return reject(_err);
+        return resolve({ ...product, status: 200 });
+      });
+    });
+  });
+}
+
 function checkToken(token) {
   return new Promise((resolve, reject) => {
     jwt.verify(token, process.env.ACCESS_TOKEN_KEY, (err, decoded) => {
@@ -49,5 +67,6 @@ function checkToken(token) {
 
 module.exports = {
   login,
+  logout,
   checkToken,
 };
