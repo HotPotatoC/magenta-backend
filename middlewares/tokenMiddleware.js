@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const InvalidToken = require('../models/InvalidToken');
+const InvalidToken = require('@models/InvalidToken');
 
 /* eslint-disable consistent-return */
 module.exports = (req, res, next) => {
