@@ -52,12 +52,16 @@ async function logoutHandler(req, res) {
   try {
     const { product, status } = await services.auth.logout(token);
 
-    if (status === 200) {
-      return res.status(200).json({
-        message: 'Successfully logged out!',
-        blacklisted: product,
+    if (status === 401) {
+      return res.status(401).json({
+        valid: false,
+        message: 'Unauthorized user please login to proceed',
       });
     }
+    return res.status(200).json({
+      message: 'Successfully logged out!',
+      blacklisted: product,
+    });
   } catch (error) {
     return res.status(500).json({
       status: res.statusCode,

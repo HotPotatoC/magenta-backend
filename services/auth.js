@@ -42,14 +42,23 @@ function logout(token) {
   return new Promise((resolve, reject) => {
     jwt.verify(token, process.env.ACCESS_TOKEN_KEY, (err, decoded) => {
       if (err) return reject(err);
-      const invalidToken = new InvalidToken({
-        user_id: decoded.userId,
-        token,
-      });
 
-      invalidToken.save((_err, product) => {
+      InvalidToken.findOne({ token }, (_err, res) => {
         if (_err) return reject(_err);
-        return resolve({ product, status: 200 });
+
+        if (res) {
+          return resolve({ status: 401 });
+        }
+
+        const invalidToken = new InvalidToken({
+          user_id: decoded.userId,
+          token,
+        });
+
+        invalidToken.save((__err, product) => {
+          if (__err) return reject(__err);
+          return resolve({ product, status: 200 });
+        });
       });
     });
   });
