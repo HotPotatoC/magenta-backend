@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
   if (authorization) {
     const token = authorization.split(' ')[1];
 
-    InvalidToken.find({ token }).exec((err, doc) => {
+    InvalidToken.findOne({ token }).exec((err, doc) => {
       if (err) {
         return res.status(500).json({
           status: res.statusCode,
