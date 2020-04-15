@@ -14,7 +14,7 @@ module.exports = (req, res, next) => {
         });
       }
 
-      if (doc.length > 0) {
+      if (doc && doc.length > 0) {
         return res.status(403).json({
           message: 'Login session has expired please login',
         });
