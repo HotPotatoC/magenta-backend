@@ -2,38 +2,73 @@ require('module-alias/register');
 
 const services = require('@services');
 
-function getUsersHandler(req, res) {
-  services.users.getUsers((err, docs) => {
-    if (err) {
-      console.log(err);
-      res.status(500).json({
-        status: res.statusCode,
-        message: 'There was a problem on our side.',
-      });
-      return;
-    }
+async function getUsersHandler(req, res) {
+  try {
+    const docs = await services.users.getUsers();
 
-    res.status(200).json({
-      docs,
+    const response = docs.map((doc) => ({
+      ...doc.toObject(),
+      links: [
+        {
+          rel: 'user',
+          href: `/users/${doc.username}`,
+          action: 'GET',
+        },
+        {
+          rel: 'user',
+          href: `/users/${doc.username}`,
+          action: 'PUT',
+        },
+        {
+          rel: 'user',
+          href: `/users/${doc.username}`,
+          action: 'DELETE',
+        },
+      ],
+    }));
+
+    return res.status(200).json(response);
+  } catch (error) {
+    return res.status(500).json({
+      status: res.statusCode,
+      message: 'There was a problem on our side.',
     });
-  });
+  }
 }
 
-function getOneUserHandler(req, res) {
-  const { username } = req.params;
+async function getOneUserHandler(req, res) {
+  try {
+    const { username } = req.params;
+    const doc = await services.users.getUserByUsername(username);
 
-  services.users.getUserByUsername(username, (err, doc) => {
-    if (err) {
-      console.log(err);
-      res.status(500).json({
-        status: res.statusCode,
-        message: 'There was a problem on our side.',
-      });
-      return;
-    }
+    const response = {
+      ...doc.toObject(),
+      links: [
+        {
+          rel: 'user',
+          href: `/users/${doc.username}`,
+          action: 'GET',
+        },
+        {
+          rel: 'user',
+          href: `/users/${doc.username}`,
+          action: 'PUT',
+        },
+        {
+          rel: 'user',
+          href: `/users/${doc.username}`,
+          action: 'DELETE',
+        },
+      ],
+    };
 
-    res.status(200).json(doc);
-  });
+    return res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({
+      status: res.statusCode,
+      message: 'There was a problem on our side.',
+    });
+  }
 }
 
 function registerUserHandler(req, res) {

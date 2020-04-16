@@ -9,17 +9,21 @@ const projection = {
   password: 0,
 };
 
-function getUsers(callback) {
-  User.find({}, projection, (err, docs) => {
-    if (err) return callback(err, null);
-    return callback(null, docs);
+function getUsers() {
+  return new Promise((resolve, reject) => {
+    User.find({}, projection, (err, docs) => {
+      if (err) return reject(err);
+      return resolve(docs);
+    });
   });
 }
 
-function getUserByUsername(username, callback) {
-  User.findOne({ username }, projection, (err, doc) => {
-    if (err) return callback(err, null);
-    return callback(null, doc);
+function getUserByUsername(username) {
+  return new Promise((resolve, reject) => {
+    User.findOne({ username }, projection, (err, doc) => {
+      if (err) return reject(err);
+      return resolve(doc);
+    });
   });
 }
 
@@ -48,25 +52,29 @@ function registerNewUser(payload) {
   });
 }
 
-function updateUserByUsername(username, payload, callback) {
-  const query = User.findOneAndUpdate(
-    { username },
-    { username: payload.username },
-    { upsert: true }
-  );
+function updateUserByUsername(username, payload) {
+  return new Promise((resolve, reject) => {
+    const query = User.findOneAndUpdate(
+      { username },
+      { username: payload.username },
+      { upsert: true }
+    );
 
-  query.exec((err, result) => {
-    if (err) return callback(err, null);
-    return callback(null, result);
+    query.exec((err, result) => {
+      if (err) return reject(null);
+      return resolve(result);
+    });
   });
 }
 
-function deleteUserByUsername(username, callback) {
-  const query = User.deleteOne({ username });
+function deleteUserByUsername(username) {
+  return new Promise((resolve, reject) => {
+    const query = User.deleteOne({ username });
 
-  query.exec((err, result) => {
-    if (err) return callback(err, null);
-    return callback(null, result);
+    query.exec((err, result) => {
+      if (err) return reject(null);
+      return resolve(result);
+    });
   });
 }
 
