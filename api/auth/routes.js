@@ -1,7 +1,7 @@
 require('module-alias/register');
 
 const router = require('express').Router();
-const handler = require('@httpd/auth/handler');
+const handler = require('@api/auth/handler');
 const tokenMiddleware = require('@middlewares/tokenMiddleware');
 
 router.post('/login', handler.loginHandler);

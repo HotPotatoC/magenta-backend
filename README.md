@@ -87,7 +87,7 @@ Existing aliases:
     "@config": "./config",
     "@middlewares": "./middlewares",
     "@models": "./models",
-    "@httpd": "./httpd",
+    "@api": "./api",
     "@services": "./services",
     "@validation": "./validation"
   },

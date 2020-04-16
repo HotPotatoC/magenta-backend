@@ -15,7 +15,7 @@
     "@config": "./config",
     "@middlewares": "./middlewares",
     "@models": "./models",
-    "@httpd": "./httpd",
+    "@api": "./api",
     "@services": "./services",
     "@utils": "./utils",
     "@validation": "./validation"
