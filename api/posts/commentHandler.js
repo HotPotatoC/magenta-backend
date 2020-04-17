@@ -8,7 +8,10 @@ async function getCommentsByPostHandler(req, res) {
   try {
     const comments = await services.comments.getCommentsByPostId(postId);
 
-    return res.status(200).json(comments);
+    return res.status(200).json({
+      status: res.statusCode,
+      comments,
+    });
   } catch (error) {
     return res.status(500).json({
       status: res.statusCode,
@@ -32,6 +35,7 @@ async function createCommentHandler(req, res) {
     await services.comments.createComment(payload);
 
     return res.status(201).json({
+      status: res.statusCode,
       message: `Successfully added a new comment to the post id(${req.params.id})`,
     });
   } catch (error) {
