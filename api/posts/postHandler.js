@@ -6,7 +6,10 @@ async function getPostsHandler(req, res) {
   try {
     const posts = await services.posts.getAllPosts(req.query);
 
-    return res.status(200).json(posts);
+    return res.status(200).json({
+      status: res.statusCode,
+      posts,
+    });
   } catch (error) {
     return res.status(500).json({
       status: res.statusCode,
@@ -21,7 +24,10 @@ async function getSinglePostHandler(req, res) {
   try {
     const post = await services.posts.getSinglePost(postId);
 
-    return res.status(200).json(post);
+    return res.status(200).json({
+      status: res.statusCode,
+      post,
+    });
   } catch (error) {
     return res.status(500).json({
       status: res.statusCode,
@@ -37,20 +43,24 @@ async function searchPostHandler(req, res) {
 
       if (post.length < 1) {
         return res.status(404).json({
-          empty: true,
+          status: res.statusCode,
           message: `We couldn't find anything for ${req.query.q}`,
         });
       }
 
       return res.status(200).json({
-        empty: false,
+        status: res.statusCode,
         result: post,
       });
     } catch (error) {
-      return res.status(400).json(error);
+      return res.status(400).json({
+        status: res.statusCode,
+        error,
+      });
     }
   } else {
     return res.status(400).json({
+      status: res.statusCode,
       message: 'Please provide a search query',
     });
   }
@@ -66,6 +76,7 @@ async function createPostHandler(req, res) {
     await services.posts.createPost(payload);
 
     return res.status(201).json({
+      status: res.statusCode,
       message: 'Successfully inserted a new post to the collection',
     });
   } catch (error) {
@@ -84,6 +95,7 @@ async function updatePostHandler(req, res) {
     await services.posts.updatePost(postId, payload);
 
     return res.status(200).json({
+      status: res.statusCode,
       message: 'Successfully updated post',
     });
   } catch (error) {
@@ -101,7 +113,8 @@ async function deletePostHandler(req, res) {
     const { deletedCount } = await services.posts.deletePost(postId);
 
     return res.status(200).json({
-      msg: `Successfully deleted ${deletedCount} data`,
+      status: res.statusCode,
+      message: `Successfully deleted ${deletedCount} data`,
     });
   } catch (error) {
     return res.status(500).json({

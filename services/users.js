@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 require('module-alias/register');
 
 const User = require('@models/User');
@@ -54,15 +55,16 @@ function registerNewUser(payload) {
 
 function updateUserByUsername(username, payload) {
   return new Promise((resolve, reject) => {
-    const query = User.findOneAndUpdate(
-      { username },
-      { username: payload.username },
-      { upsert: true }
-    );
+    const query = User.findOne({ username });
 
-    query.exec((err, result) => {
-      if (err) return reject(null);
-      return resolve(result);
+    query.exec((err, user) => {
+      if (err) return reject(err);
+      if (!user) return reject(404);
+
+      user.username = payload.username;
+      user.save();
+
+      return resolve(user);
     });
   });
 }
@@ -71,8 +73,12 @@ function deleteUserByUsername(username) {
   return new Promise((resolve, reject) => {
     const query = User.deleteOne({ username });
 
+    query.orFail(() => {
+      return resolve(404);
+    });
+
     query.exec((err, result) => {
-      if (err) return reject(null);
+      if (err) return reject(err);
       return resolve(result);
     });
   });
