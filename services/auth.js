@@ -3,10 +3,10 @@ require('module-alias/register');
 const jwt = require('jsonwebtoken');
 
 const User = require('@models/User');
+const InvalidToken = require('@models/InvalidToken');
 const { validateLogin } = require('@validation/auth');
 const config = require('@config');
 
-/* eslint-disable consistent-return */
 function login(email, password) {
   return new Promise((resolve, reject) => {
     const validation = validateLogin({ email, password });
@@ -38,6 +38,32 @@ function login(email, password) {
   });
 }
 
+function logout(token) {
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, process.env.ACCESS_TOKEN_KEY, (err, decoded) => {
+      if (err) return reject(err);
+
+      InvalidToken.findOne({ token }, (_err, res) => {
+        if (_err) return reject(_err);
+
+        if (res) {
+          return resolve({ status: 401 });
+        }
+
+        const invalidToken = new InvalidToken({
+          user_id: decoded.userId,
+          token,
+        });
+
+        invalidToken.save((__err, product) => {
+          if (__err) return reject(__err);
+          return resolve({ product, status: 200 });
+        });
+      });
+    });
+  });
+}
+
 function checkToken(token) {
   return new Promise((resolve, reject) => {
     jwt.verify(token, process.env.ACCESS_TOKEN_KEY, (err, decoded) => {
@@ -49,5 +75,6 @@ function checkToken(token) {
 
 module.exports = {
   login,
+  logout,
   checkToken,
 };

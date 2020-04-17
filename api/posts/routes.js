@@ -2,8 +2,8 @@ require('module-alias/register');
 
 const router = require('express').Router();
 const tokenMiddleware = require('@middlewares/tokenMiddleware');
-const postHandler = require('@httpd/posts/postHandler');
-const commentHandler = require('@httpd/posts/commentHandler');
+const postHandler = require('@api/posts/postHandler');
+const commentHandler = require('@api/posts/commentHandler');
 
 router.get('/', tokenMiddleware, postHandler.getPostsHandler);
 router.get('/search', tokenMiddleware, postHandler.searchPostHandler);

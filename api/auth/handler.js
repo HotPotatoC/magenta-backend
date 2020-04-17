@@ -45,6 +45,31 @@ async function loginHandler(req, res) {
   }
 }
 
+async function logoutHandler(req, res) {
+  const { authorization } = req.headers;
+  const token = authorization.split(' ')[1];
+
+  try {
+    const { product, status } = await services.auth.logout(token);
+
+    if (status === 401) {
+      return res.status(401).json({
+        valid: false,
+        message: 'Unauthorized user please login to proceed',
+      });
+    }
+    return res.status(200).json({
+      message: 'Successfully logged out!',
+      blacklisted: product,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: res.statusCode,
+      message: 'There was a problem on our side.',
+    });
+  }
+}
+
 async function registerHandler(req, res) {
   try {
     await services.users.registerNewUser(req.body);
@@ -107,6 +132,7 @@ async function checkToken(req, res) {
 
 module.exports = {
   loginHandler,
+  logoutHandler,
   registerHandler,
   checkToken,
 };

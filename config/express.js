@@ -35,8 +35,8 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Mount Routes
-app.use('/auth', require('@httpd/auth/routes'));
-app.use('/posts', require('@httpd/posts/routes'));
-app.use('/users', require('@httpd/users/routes'));
+app.use('/auth', require('@api/auth/routes'));
+app.use('/posts', require('@api/posts/routes'));
+app.use('/users', require('@api/users/routes'));
 
 module.exports = http.createServer(app);
