@@ -79,6 +79,7 @@ async function updateUserHandler(req, res) {
     await services.users.updateUserByUsername(username, payload);
 
     return res.status(200).json({
+      status: res.statusCode,
       message: 'Successfully updated user',
     });
   } catch (error) {
@@ -107,7 +108,8 @@ async function deleteUserHandler(req, res) {
       });
     }
     return res.status(200).json({
-      msg: `Successfully deleted ${result.deletedCount} data`,
+      status: res.statusCode,
+      message: `Successfully deleted ${result.deletedCount} data`,
     });
   } catch (error) {
     return res.status(500).json({
