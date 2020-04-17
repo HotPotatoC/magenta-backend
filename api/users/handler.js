@@ -72,16 +72,22 @@ async function getOneUserHandler(req, res) {
 }
 
 async function updateUserHandler(req, res) {
-  try {
-    const { username } = req.params;
-    const payload = req.body;
+  const { username } = req.params;
+  const payload = req.body;
 
+  try {
     await services.users.updateUserByUsername(username, payload);
 
     return res.status(200).json({
       message: 'Successfully updated user',
     });
   } catch (error) {
+    if (error === 404) {
+      return res.status(404).json({
+        status: res.statusCode,
+        message: `No user with name '${username}'.`,
+      });
+    }
     return res.status(500).json({
       status: res.statusCode,
       message: 'There was a problem on our side.',
@@ -90,11 +96,16 @@ async function updateUserHandler(req, res) {
 }
 
 async function deleteUserHandler(req, res) {
+  const { username } = req.params;
   try {
-    const result = await services.users.deleteUserByUsername(
-      req.params.username
-    );
+    const result = await services.users.deleteUserByUsername(username);
 
+    if (result === 404) {
+      return res.status(404).json({
+        status: res.statusCode,
+        message: `No user with name '${username}'.`,
+      });
+    }
     return res.status(200).json({
       msg: `Successfully deleted ${result.deletedCount} data`,
     });
