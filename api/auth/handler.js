@@ -7,14 +7,13 @@ async function loginHandler(req, res) {
   const { email, password } = req.body;
 
   try {
-    const { token, user, status } = await services.auth.login(email, password);
+    const { token, user } = await services.auth.login(email, password);
     req.session.user = user;
     req.session.token = token;
 
-    return res.status(status).json({
-      message: 'Successfully logged in',
+    return res.status(200).json({
+      status: res.statusCode,
       user: {
-        id: user._id,
         username: user.username,
         email: user.email,
         img_url: user.img_url,
@@ -27,6 +26,7 @@ async function loginHandler(req, res) {
       const detail = error.err.details[0];
 
       return res.status(400).json({
+        status: res.statusCode,
         message: detail.message,
         context: detail.context,
       });
@@ -40,6 +40,7 @@ async function loginHandler(req, res) {
     }
 
     return res.status(error.status).json({
+      status: res.statusCode,
       message: 'Unauthorized user please login to proceed',
     });
   }
@@ -50,17 +51,18 @@ async function logoutHandler(req, res) {
   const token = authorization.split(' ')[1];
 
   try {
-    const { product, status } = await services.auth.logout(token);
+    const { status } = await services.auth.logout(token);
 
     if (status === 401) {
       return res.status(401).json({
+        status: res.statusCode,
         valid: false,
         message: 'Unauthorized user please login to proceed',
       });
     }
     return res.status(200).json({
+      status: res.statusCode,
       message: 'Successfully logged out!',
-      blacklisted: product,
     });
   } catch (error) {
     return res.status(500).json({
@@ -75,17 +77,20 @@ async function registerHandler(req, res) {
     await services.users.registerNewUser(req.body);
 
     return res.status(201).json({
+      status: res.statusCode,
       message: 'Successfully registered a new account!',
     });
   } catch (error) {
     if (error.isJoi) {
       return res.status(400).json({
+        status: res.statusCode,
         message: error.details[0].message,
         context: error.details[0].context,
       });
     }
     if (error.name === 'ValidationError') {
       return res.status(400).json({
+        status: res.statusCode,
         message: error.message,
       });
     }
@@ -105,6 +110,7 @@ async function checkToken(req, res) {
     const decoded = await services.auth.checkToken(token);
 
     return res.status(200).json({
+      status: res.statusCode,
       valid: true,
       message: 'Token still valid',
       payload: {
@@ -116,6 +122,7 @@ async function checkToken(req, res) {
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
       return res.status(403).json({
+        status: res.statusCode,
         valid: false,
         message: 'Login session has expired please login',
         expiredAt: error.expiredAt,
@@ -123,6 +130,7 @@ async function checkToken(req, res) {
     }
 
     return res.status(401).json({
+      status: res.statusCode,
       valid: false,
       message: 'Unauthorized user please login to proceed',
       error,
