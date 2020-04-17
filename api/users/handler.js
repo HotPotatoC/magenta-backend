@@ -71,41 +71,39 @@ async function getOneUserHandler(req, res) {
   }
 }
 
-function updateUserHandler(req, res) {
-  const { username } = req.params;
-  const payload = req.body;
+async function updateUserHandler(req, res) {
+  try {
+    const { username } = req.params;
+    const payload = req.body;
 
-  services.users.updateUserByUsername(username, payload, (err) => {
-    if (err) {
-      console.log(err);
-      res.status(500).json({
-        status: res.statusCode,
-        message: 'There was a problem on our side.',
-      });
-      return;
-    }
-    res.status(200).json({
+    await services.users.updateUserByUsername(username, payload);
+
+    return res.status(200).json({
       message: 'Successfully updated user',
     });
-  });
+  } catch (error) {
+    return res.status(500).json({
+      status: res.statusCode,
+      message: 'There was a problem on our side.',
+    });
+  }
 }
 
-function deleteUserHandler(req, res) {
-  const { username } = req.params;
-  services.users.deleteUserByUsername(username, (err, result) => {
-    if (err) {
-      console.log(err);
-      res.status(500).json({
-        status: res.statusCode,
-        message: 'There was a problem on our side.',
-      });
-      return;
-    }
+async function deleteUserHandler(req, res) {
+  try {
+    const result = await services.users.deleteUserByUsername(
+      req.params.username
+    );
 
-    res.status(200).json({
+    return res.status(200).json({
       msg: `Successfully deleted ${result.deletedCount} data`,
     });
-  });
+  } catch (error) {
+    return res.status(500).json({
+      status: res.statusCode,
+      message: 'There was a problem on our side.',
+    });
+  }
 }
 
 module.exports = {
