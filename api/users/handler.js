@@ -71,25 +71,6 @@ async function getOneUserHandler(req, res) {
   }
 }
 
-function registerUserHandler(req, res) {
-  const payload = req.body;
-
-  services.users.registerNewUser(payload, (err) => {
-    if (err) {
-      console.log(err);
-      res.status(500).json({
-        status: res.statusCode,
-        message: 'There was a problem on our side.',
-      });
-      return;
-    }
-
-    res.status(201).json({
-      message: 'Successfully inserted a new user to the collection',
-    });
-  });
-}
-
 function updateUserHandler(req, res) {
   const { username } = req.params;
   const payload = req.body;
@@ -130,7 +111,6 @@ function deleteUserHandler(req, res) {
 module.exports = {
   getUsersHandler,
   getOneUserHandler,
-  registerUserHandler,
   updateUserHandler,
   deleteUserHandler,
 };
