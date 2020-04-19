@@ -9,7 +9,6 @@ const schema = new mongoose.Schema(
     username: {
       type: String,
       required: [true, 'Cannot be blank'],
-      trim: true,
       lowercase: true,
       min: 6,
       max: 24,
@@ -40,7 +39,8 @@ const schema = new mongoose.Schema(
 );
 
 schema.plugin(uniqueValidator, {
-  message: 'Is already taken.',
+  type: 'mongoose-unique-validator',
+  message: 'is already taken.',
 });
 
 schema.pre('save', function (next) {
