@@ -44,6 +44,7 @@ function registerNewUser(payload) {
       email: payload.email,
       password: payload.password,
       img_url: payload.img_url || '',
+      bio: payload.bio || '',
     });
 
     return user.save((err, product) => {
