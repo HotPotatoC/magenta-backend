@@ -13,12 +13,10 @@ const app = express();
 const config = require('@config');
 const { session, options } = require('@config/session');
 
-console.time(chalk.greenBright('Connected to database!'));
-
 mongoose
   .connect(config.database.uri, config.database.options)
   .then(() => {
-    console.timeEnd(chalk.greenBright('Connected to database!'));
+    console.log(chalk.greenBright('Connected to database!'));
   })
   .catch((err) => {
     console.log(chalk.red(`❌ Database Connection Error: ${err}`));
