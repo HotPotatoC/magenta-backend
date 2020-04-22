@@ -75,7 +75,7 @@ function deleteUserByUsername(username) {
     const query = User.deleteOne({ username });
 
     query.orFail(() => {
-      return resolve(404);
+      return reject(404);
     });
 
     query.exec((err, result) => {
