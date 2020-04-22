@@ -101,17 +101,17 @@ async function deleteUserHandler(req, res) {
   try {
     const result = await services.users.deleteUserByUsername(username);
 
-    if (result === 404) {
-      return res.status(404).json({
-        status: res.statusCode,
-        message: `No user with name '${username}'.`,
-      });
-    }
     return res.status(200).json({
       status: res.statusCode,
       message: `Successfully deleted ${result.deletedCount} data`,
     });
   } catch (error) {
+    if (error === 404) {
+      return res.status(404).json({
+        status: res.statusCode,
+        message: `No user with name '${username}'.`,
+      });
+    }
     return res.status(500).json({
       status: res.statusCode,
       message: 'There was a problem on our side.',
