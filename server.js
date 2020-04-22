@@ -1,5 +1,5 @@
-require('module-alias/register');
 require('dotenv').config();
+require('module-alias/register');
 const chalk = require('chalk');
 const server = require('@config/express');
 
