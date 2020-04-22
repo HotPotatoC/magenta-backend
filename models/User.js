@@ -9,18 +9,15 @@ const schema = new mongoose.Schema(
     username: {
       type: String,
       required: [true, 'Cannot be blank'],
-      match: [/^[a-zA-Z0-9]+$/, 'is invalid'],
+      lowercase: true,
       min: 6,
       max: 24,
       unique: true,
-      index: true,
     },
     email: {
       type: String,
       required: [true, 'Cannot be blank'],
-      match: [/\S+@\S+\.\S+/, 'is invalid'],
       unique: true,
-      index: true,
     },
     password: {
       type: String,
@@ -32,12 +29,18 @@ const schema = new mongoose.Schema(
       type: String,
       default: '',
     },
+    bio: {
+      type: String,
+      default: '',
+      max: 300,
+    },
   },
   { timestamps: true }
 );
 
 schema.plugin(uniqueValidator, {
-  message: 'Is already taken.',
+  type: 'mongoose-unique-validator',
+  message: 'is already taken.',
 });
 
 schema.pre('save', function (next) {

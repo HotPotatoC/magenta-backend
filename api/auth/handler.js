@@ -89,9 +89,16 @@ async function registerHandler(req, res) {
       });
     }
     if (error.name === 'ValidationError') {
+      const label = Object.keys(error.errors)[0];
+
       return res.status(400).json({
         status: res.statusCode,
-        message: error.message,
+        message: `${label} ${error.errors[label].message}`,
+        context: {
+          label,
+          value: error.errors[label].value,
+          key: error.errors[label].path,
+        },
       });
     }
 
