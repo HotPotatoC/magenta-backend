@@ -22,10 +22,10 @@ async function loginHandler(req, res) {
       expiresIn: config.jwt.options.expiresIn,
     });
   } catch (error) {
-    if (error.status === 400) {
+    if (error.status === 422) {
       const detail = error.err.details[0];
 
-      return res.status(400).json({
+      return res.status(422).json({
         status: res.statusCode,
         message: detail.message,
         context: detail.context,
@@ -47,11 +47,8 @@ async function loginHandler(req, res) {
 }
 
 async function logoutHandler(req, res) {
-  const { authorization } = req.headers;
-  const token = authorization.split(' ')[1];
-
   try {
-    const { status } = await services.auth.logout(token);
+    const { status } = await services.auth.logout(res.locals.token);
 
     if (status === 401) {
       return res.status(401).json({
@@ -82,7 +79,7 @@ async function registerHandler(req, res) {
     });
   } catch (error) {
     if (error.isJoi) {
-      return res.status(400).json({
+      return res.status(422).json({
         status: res.statusCode,
         message: error.details[0].message,
         context: error.details[0].context,
@@ -91,7 +88,7 @@ async function registerHandler(req, res) {
     if (error.name === 'ValidationError') {
       const label = Object.keys(error.errors)[0];
 
-      return res.status(400).json({
+      return res.status(422).json({
         status: res.statusCode,
         message: `${label} ${error.errors[label].message}`,
         context: {
@@ -110,11 +107,8 @@ async function registerHandler(req, res) {
 }
 
 async function checkToken(req, res) {
-  const { authorization } = req.headers;
-  const token = authorization.split(' ')[1];
-
   try {
-    const decoded = await services.auth.checkToken(token);
+    const decoded = await services.auth.checkToken(res.locals.token);
 
     return res.status(200).json({
       status: res.statusCode,

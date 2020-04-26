@@ -25,6 +25,10 @@ const schema = new mongoose.Schema(
       min: 6,
       max: 1024,
     },
+    active: {
+      type: Boolean,
+      default: false,
+    },
     img_url: {
       type: String,
       default: '',

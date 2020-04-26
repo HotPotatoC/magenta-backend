@@ -14,16 +14,16 @@ module.exports = (req, res, next) => {
         });
       }
 
-      if (doc && doc.length > 0) {
-        return res.status(403).json({
-          message: 'Login session has expired please login',
+      if (doc) {
+        return res.status(401).json({
+          message: 'Unauthorized user please login to proceed',
         });
       }
 
       jwt.verify(token, process.env.ACCESS_TOKEN_KEY, (_err) => {
         if (_err) {
           if (_err.name === 'TokenExpiredError') {
-            return res.status(403).json({
+            return res.status(401).json({
               message: 'Login session has expired please login',
               expiredAt: _err.expiredAt,
             });
@@ -32,6 +32,8 @@ module.exports = (req, res, next) => {
             message: 'Unauthorized user please login to proceed',
           });
         }
+
+        res.locals.token = token;
         next();
       });
     });
