@@ -47,11 +47,8 @@ async function loginHandler(req, res) {
 }
 
 async function logoutHandler(req, res) {
-  const { authorization } = req.headers;
-  const token = authorization.split(' ')[1];
-
   try {
-    const { status } = await services.auth.logout(token);
+    const { status } = await services.auth.logout(res.locals.token);
 
     if (status === 401) {
       return res.status(401).json({
@@ -110,11 +107,8 @@ async function registerHandler(req, res) {
 }
 
 async function checkToken(req, res) {
-  const { authorization } = req.headers;
-  const token = authorization.split(' ')[1];
-
   try {
-    const decoded = await services.auth.checkToken(token);
+    const decoded = await services.auth.checkToken(res.locals.token);
 
     return res.status(200).json({
       status: res.statusCode,

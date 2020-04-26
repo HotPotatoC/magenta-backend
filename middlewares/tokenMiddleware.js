@@ -32,6 +32,8 @@ module.exports = (req, res, next) => {
             message: 'Unauthorized user please login to proceed',
           });
         }
+
+        res.locals.token = token;
         next();
       });
     });
