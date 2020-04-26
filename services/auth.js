@@ -12,7 +12,7 @@ function login(email, password) {
     const validation = validateLogin({ email, password });
 
     if (validation.error) {
-      return reject({ err: validation.error, status: 400 });
+      return reject({ err: validation.error, status: 422 });
     }
 
     User.findOne({ email }, (err, user) => {

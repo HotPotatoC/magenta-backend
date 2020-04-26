@@ -22,10 +22,10 @@ async function loginHandler(req, res) {
       expiresIn: config.jwt.options.expiresIn,
     });
   } catch (error) {
-    if (error.status === 400) {
+    if (error.status === 422) {
       const detail = error.err.details[0];
 
-      return res.status(400).json({
+      return res.status(422).json({
         status: res.statusCode,
         message: detail.message,
         context: detail.context,
@@ -79,7 +79,7 @@ async function registerHandler(req, res) {
     });
   } catch (error) {
     if (error.isJoi) {
-      return res.status(400).json({
+      return res.status(422).json({
         status: res.statusCode,
         message: error.details[0].message,
         context: error.details[0].context,
@@ -88,7 +88,7 @@ async function registerHandler(req, res) {
     if (error.name === 'ValidationError') {
       const label = Object.keys(error.errors)[0];
 
-      return res.status(400).json({
+      return res.status(422).json({
         status: res.statusCode,
         message: `${label} ${error.errors[label].message}`,
         context: {
