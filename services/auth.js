@@ -47,7 +47,7 @@ function logout(token) {
         if (_err) return reject(_err);
 
         if (res) {
-          return resolve({ status: 401 });
+          return reject({ status: 401 });
         }
 
         const invalidToken = new InvalidToken({
