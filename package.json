@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node ./server.js",
-    "dev": "./node_modules/.bin/nodemon ./server.js",
+    "start": "node ./bin/start-server",
+    "dev": "./node_modules/.bin/nodemon ./bin/start-server",
     "lint": "./node_modules/.bin/eslint .",
     "lint:fix": "./node_modules/.bin/eslint . --fix",
     "test": "./node_modules/mocha/bin/mocha"
