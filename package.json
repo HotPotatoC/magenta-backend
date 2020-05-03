@@ -5,9 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node ./server.js",
-    "start:dev": "cls && nodemon ./server.js",
+    "dev": "./node_modules/.bin/nodemon ./server.js",
     "lint": "./node_modules/.bin/eslint .",
-    "lint:fix": "npm run lint -- --fix",
+    "lint:fix": "./node_modules/.bin/eslint . --fix",
     "test": "./node_modules/mocha/bin/mocha"
   },
   "_moduleAliases": {
@@ -48,6 +48,7 @@
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-prettier": "^3.1.2",
     "mocha": "^7.1.1",
+    "nodemon": "^2.0.3",
     "prettier": "^2.0.4"
   }
 }
