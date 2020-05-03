@@ -1,8 +1,6 @@
-require('module-alias/register');
-
 const path = require('path');
-const development = require('@config/env/development');
-const production = require('@config/env/production');
+const development = require('./env/development');
+const production = require('./env/production');
 
 const defaults = {
   root: path.normalize(path.join(__dirname, '/..')),

@@ -1,6 +1,4 @@
-require('module-alias/register');
-
-const Post = require('@models/Post');
+const Post = require('../models/Post');
 
 function getAllPosts(filter = null) {
   return new Promise((resolve, reject) => {

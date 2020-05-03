@@ -1,8 +1,8 @@
-require('module-alias/register');
+const router = require('express').Router();
+const tokenMiddleware = require('../../middlewares/tokenMiddleware');
+const services = require('../../services');
 
-const services = require('@services');
-
-async function getCommentsByPostHandler(req, res) {
+router.get('/:id/comments', tokenMiddleware, async (req, res) => {
   const postId = req.params.id;
 
   try {
@@ -18,13 +18,11 @@ async function getCommentsByPostHandler(req, res) {
       message: 'There was a problem on our side.',
     });
   }
-}
+});
 
-async function createCommentHandler(req, res) {
-  const token = req.headers.authorization.split(' ')[1];
-
+router.post('/:id/comments', tokenMiddleware, async (req, res) => {
   try {
-    const { userId } = await services.auth.checkToken(token);
+    const { userId } = await services.auth.checkToken(res.locals.token);
 
     const payload = {
       user_id: userId,
@@ -44,9 +42,6 @@ async function createCommentHandler(req, res) {
       message: error.message,
     });
   }
-}
+});
 
-module.exports = {
-  getCommentsByPostHandler,
-  createCommentHandler,
-};
+module.exports = router;
