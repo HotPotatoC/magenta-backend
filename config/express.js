@@ -42,4 +42,22 @@ app.get('/status', (req, res) => {
   });
 });
 
+/* eslint-disable no-unused-vars */
+if (app.get('env') === 'development') {
+  app.use((err, req, res, next) => {
+    res.status(err.status || 500).json({
+      status: err.status || 500,
+      message: err.message,
+      error: err,
+    });
+  });
+}
+
+app.use((err, req, res, next) => {
+  res.status(err.status || 500).json({
+    status: err.status || 500,
+    message: 'There was a problem on our side.',
+  });
+});
+
 module.exports = http.createServer(app);
