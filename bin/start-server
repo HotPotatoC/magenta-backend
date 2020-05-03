@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 require('dotenv').config();
-const server = require('../config/express');
+const server = require('../config/server');
 
 const port = process.env.PORT;
 
