@@ -25,13 +25,13 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Mount Routes
-app.use('/auth', require('@api/auth/routes'));
+app.use('/auth', require('../api/auth/routes'));
 app.use(
   '/posts',
-  require('@api/posts/routes'),
-  require('@api/comments/routes')
+  require('../api/posts/routes'),
+  require('../api/comments/routes')
 );
-app.use('/users', require('@api/users/routes'));
+app.use('/users', require('../api/users/routes'));
 
 app.get('/status', (req, res) => {
   res.json({
