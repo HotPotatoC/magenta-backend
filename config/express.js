@@ -36,4 +36,11 @@ app.use(
 );
 app.use('/users', require('@api/users/routes'));
 
+app.get('/status', (req, res) => {
+  res.json({
+    duration: Math.floor(process.uptime()),
+    message: `Server is up for ${Math.floor(process.uptime())}`,
+  });
+});
+
 module.exports = http.createServer(app);
