@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 require('dotenv').config();
-require('module-alias/register');
-const server = require('@config/express');
+const server = require('../config/express');
 
 const port = process.env.PORT;
 

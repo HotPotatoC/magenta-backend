@@ -1,10 +1,8 @@
-require('module-alias/register');
-
 const redis = require('redis');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 
-const config = require('@config');
+const config = require('.');
 
 const redisClient = redis.createClient(
   config.redis.unix_socket,

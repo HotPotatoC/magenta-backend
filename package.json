@@ -10,16 +10,6 @@
     "lint:fix": "./node_modules/.bin/eslint . --fix",
     "test": "./node_modules/mocha/bin/mocha"
   },
-  "_moduleAliases": {
-    "@app": "./",
-    "@config": "./config",
-    "@middlewares": "./middlewares",
-    "@models": "./models",
-    "@api": "./api",
-    "@services": "./services",
-    "@utils": "./utils",
-    "@validation": "./validation"
-  },
   "keywords": [],
   "author": "HotPotatoC",
   "license": "ISC",
@@ -34,7 +24,6 @@
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "jsonwebtoken": "^8.5.1",
-    "module-alias": "^2.2.2",
     "mongoose": "^5.9.7",
     "mongoose-unique-validator": "^2.0.3",
     "morgan": "^1.10.0",

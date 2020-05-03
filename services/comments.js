@@ -1,7 +1,5 @@
-require('module-alias/register');
-
-const Comment = require('@models/Comment');
-const Post = require('@models/Post');
+const Comment = require('../models/Comment');
+const Post = require('../models/Post');
 
 function getCommentsByPostId(postId) {
   return new Promise((resolve, reject) => {

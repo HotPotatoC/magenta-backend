@@ -1,5 +1,3 @@
-require('module-alias/register');
-
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const compression = require('compression');
@@ -9,8 +7,8 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 
 const app = express();
-const config = require('@config');
-const { session, options } = require('@config/session');
+const config = require('.');
+const { session, options } = require('./session');
 
 mongoose.connect(config.database.uri, config.database.options).catch((err) => {
   console.log(`❌ Database Connection Error: ${err}`);

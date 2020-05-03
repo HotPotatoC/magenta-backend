@@ -1,8 +1,6 @@
-require('module-alias/register');
-
 const router = require('express').Router();
-const tokenMiddleware = require('@middlewares/tokenMiddleware');
-const services = require('@services');
+const tokenMiddleware = require('../../middlewares/tokenMiddleware');
+const services = require('../../services');
 
 router.get('/', tokenMiddleware, async (req, res) => {
   try {

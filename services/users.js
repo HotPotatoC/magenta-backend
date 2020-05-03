@@ -1,8 +1,6 @@
 /* eslint-disable no-param-reassign */
-require('module-alias/register');
-
-const User = require('@models/User');
-const { validateRegister } = require('@validation/auth');
+const User = require('../models/User');
+const { validateRegister } = require('../validation/auth');
 
 const projection = {
   _id: 0,

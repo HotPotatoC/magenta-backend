@@ -1,15 +1,13 @@
-require('module-alias/register');
-
 const router = require('express').Router();
 
-const config = require('@config');
-const services = require('@services');
-const tokenMiddleware = require('@middlewares/tokenMiddleware');
+const config = require('../../config');
+const services = require('../../services');
+const tokenMiddleware = require('../../middlewares/tokenMiddleware');
 
 const {
   joiErrorResponseMaker,
   validationErrorResponseMaker,
-} = require('@api/helpers');
+} = require('../helpers');
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
