@@ -1,4 +1,4 @@
-function joiResponseMaker(error) {
+function joiErrorResponseMaker(res, error) {
   if (error.isJoi) {
     const response = {
       status: 422,
@@ -6,12 +6,12 @@ function joiResponseMaker(error) {
       context: error.details[0].context,
     };
 
-    return response;
+    return res.status(422).json(response);
   }
   return null;
 }
 
-function validationErrorResponseMaker(error) {
+function validationErrorResponseMaker(res, error) {
   if (error.name === 'ValidationError') {
     const label = Object.keys(error.errors)[0];
 
@@ -25,11 +25,11 @@ function validationErrorResponseMaker(error) {
       },
     };
 
-    return response;
+    return res.status(422).json(response);
   }
   return null;
 }
 module.exports = {
-  joiResponseMaker,
+  joiErrorResponseMaker,
   validationErrorResponseMaker,
 };

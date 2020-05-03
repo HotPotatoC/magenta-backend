@@ -7,9 +7,9 @@ const services = require('@services');
 const tokenMiddleware = require('@middlewares/tokenMiddleware');
 
 const {
-  joiResponseMaker,
+  joiErrorResponseMaker,
   validationErrorResponseMaker,
-} = require('../helpers');
+} = require('@api/helpers');
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
@@ -31,19 +31,19 @@ router.post('/login', async (req, res) => {
     });
   } catch (error) {
     if (error.status === 422) {
-      return res.status(422).json(joiResponseMaker(error));
+      return joiErrorResponseMaker(res, error.err);
     }
 
-    if (error.status === 500) {
-      return res.status(500).json({
+    if (error.status === 401) {
+      return res.status(401).json({
         status: res.statusCode,
-        message: 'There was a problem on our side.',
+        message: 'Unauthorized user please login to proceed',
       });
     }
 
-    return res.status(error.status).json({
+    return res.status(500).json({
       status: res.statusCode,
-      message: 'Unauthorized user please login to proceed',
+      message: 'There was a problem on our side.',
     });
   }
 });
@@ -81,11 +81,12 @@ router.post('/register', async (req, res) => {
       message: 'Successfully registered a new account!',
     });
   } catch (error) {
-    if (error.isJoi) {
-      return res.status(422).json(joiResponseMaker(error));
+    if (error.status === 422) {
+      return joiErrorResponseMaker(res, error.err);
     }
-    if (error.name === 'ValidationError') {
-      return res.status(422).json(validationErrorResponseMaker(error));
+
+    if (error.err.name === 'ValidationError') {
+      return validationErrorResponseMaker(res, error.err);
     }
 
     return res.status(500).json({

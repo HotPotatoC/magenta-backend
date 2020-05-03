@@ -20,8 +20,8 @@ function login(email, password) {
       if (!user) return reject({ err, status: 401 });
 
       User.comparePassword(password, user.password, (_err, same) => {
-        if (_err) return reject({ _err, status: 500 });
-        if (!same) return reject({ _err, status: 401 });
+        if (_err) return reject({ err: _err, status: 500 });
+        if (!same) return reject({ err: _err, status: 401 });
 
         const token = jwt.sign(
           { userId: user._id, username: user.username, email: user.email },
@@ -41,10 +41,10 @@ function login(email, password) {
 function logout(token) {
   return new Promise((resolve, reject) => {
     jwt.verify(token, process.env.ACCESS_TOKEN_KEY, (err, decoded) => {
-      if (err) return reject(err);
+      if (err) return reject({ err, status: 500 });
 
       InvalidToken.findOne({ token }, (_err, res) => {
-        if (_err) return reject(_err);
+        if (_err) return reject({ err: _err, status: 500 });
 
         if (res) {
           return reject({ status: 401 });
@@ -56,7 +56,7 @@ function logout(token) {
         });
 
         invalidToken.save((__err, product) => {
-          if (__err) return reject(__err);
+          if (__err) return reject({ err: __err, status: 500 });
           return resolve({ product, status: 200 });
         });
       });

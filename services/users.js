@@ -2,7 +2,7 @@
 require('module-alias/register');
 
 const User = require('@models/User');
-const Validate = require('@validation/auth');
+const { validateRegister } = require('@validation/auth');
 
 const projection = {
   _id: 0,
@@ -13,7 +13,7 @@ const projection = {
 function getUsers() {
   return new Promise((resolve, reject) => {
     User.find({}, projection, (err, docs) => {
-      if (err) return reject(err);
+      if (err) return reject({ err, status: 500 });
       return resolve(docs);
     });
   });
@@ -22,7 +22,7 @@ function getUsers() {
 function getUserByUsername(username) {
   return new Promise((resolve, reject) => {
     User.findOne({ username }, projection, (err, doc) => {
-      if (err) return reject(err);
+      if (err) return reject({ err, status: 500 });
       return resolve(doc);
     });
   });
@@ -30,13 +30,10 @@ function getUserByUsername(username) {
 
 function registerNewUser(payload) {
   return new Promise((resolve, reject) => {
-    const validation = Validate.validateRegister(
-      payload,
-      User.validationSchema
-    );
+    const validation = validateRegister(payload);
 
     if (validation.error) {
-      return reject(validation.error);
+      return reject({ err: validation.error, status: 422 });
     }
 
     const user = new User({
@@ -48,7 +45,7 @@ function registerNewUser(payload) {
     });
 
     return user.save((err, product) => {
-      if (err) return reject(err);
+      if (err) return reject({ err, status: 500 });
       return resolve(product);
     });
   });
@@ -59,8 +56,8 @@ function updateUserByUsername(username, payload) {
     const query = User.findOne({ username });
 
     query.exec((err, user) => {
-      if (err) return reject(err);
-      if (!user) return reject(404);
+      if (err) return reject({ err, status: 500 });
+      if (!user) return reject({ err, status: 404 });
 
       user.username = payload.username;
       user.save();
@@ -74,8 +71,8 @@ function deleteUserByUsername(username) {
   return new Promise((resolve, reject) => {
     const query = User.deleteOne({ username });
 
-    query.orFail(() => {
-      return reject(404);
+    query.orFail((err) => {
+      return reject({ err, status: 404 });
     });
 
     query.exec((err, result) => {
