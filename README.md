@@ -1,4 +1,5 @@
 # Magenta Backend
+
 [![Maintainability](https://api.codeclimate.com/v1/badges/cf84ad8ae3e1c7755d4e/maintainability)](https://codeclimate.com/github/HotPotatoC/magenta-backend/maintainability)
 
 This is the backend repository for magenta social media network
@@ -17,17 +18,10 @@ Create a .env file
 $ cp .env.example .env
 ```
 
-Set your `.env` file and set your secret keys
-
-```shell
-JWT_SECRET_KEY=Your_Secret_Key
-SESSION_SECRET_KEY=Your_Secret_Key
-```
-
 To start the app
 
 ```shell
-$ npm run start:dev
+$ npm run dev
 ```
 
 Lint the project
@@ -50,7 +44,7 @@ module.exports = {
   plugins: ['prettier'],
 ```
 
-Eslint rules
+Project rules
 
 ```js
 // .eslintrc.js
@@ -60,6 +54,14 @@ rules: {
     'func-names': 'off',
     'no-console': 'off',
     'import/no-dynamic-require': 'off',
+    'import/no-unresolved': 'off',
+    'consistent-return': 'off',
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
   },
 ```
 
@@ -74,33 +76,6 @@ Prettier Configurations
 }
 ```
 
-## Module Aliases
-
-This project implements module aliases using the [module-alias](https://github.com/ilearnio/module-alias) package to ease the usage of imports/requires
-
-Existing aliases:
-
-```javascript
-// package.json
-"_moduleAliases": {
-    "@app": "./",
-    "@config": "./config",
-    "@middlewares": "./middlewares",
-    "@models": "./models",
-    "@api": "./api",
-    "@services": "./services",
-    "@validation": "./validation"
-  },
-```
-
-e.g
-
-```javascript
-require('module-alias/register');
-
-const config = require('@config/express');
-```
-
 ## Packages And Tools
 
 - [NodeJS](https://nodejs.org/)
@@ -110,7 +85,6 @@ const config = require('@config/express');
 - [Jsonwebtoken](https://github.com/auth0/node-jsonwebtoken#readme)
 - [Bcrypt](https://github.com/kelektiv/node.bcrypt.js#readme)
 - [Joi](https://www.npmjs.com/package/joi)
-- [module-alias](https://github.com/ilearnio/module-alias)
 - [Eslint](https://eslint.org/)
 - [Eslint Airbnb](https://github.com/airbnb/javascript)
 - [Prettier](https://prettier.io/)
