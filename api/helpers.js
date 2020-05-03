@@ -29,6 +29,7 @@ function validationErrorResponseMaker(res, error) {
   }
   return null;
 }
+
 module.exports = {
   joiErrorResponseMaker,
   validationErrorResponseMaker,
