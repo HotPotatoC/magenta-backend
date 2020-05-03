@@ -60,7 +60,6 @@ router.post('/logout', tokenMiddleware, async (req, res) => {
     if (error.status === 401) {
       return res.status(401).json({
         status: res.statusCode,
-        valid: false,
         message: 'Unauthorized user please login to proceed',
       });
     }
