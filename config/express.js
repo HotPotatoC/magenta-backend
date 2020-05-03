@@ -7,14 +7,13 @@ const express = require('express');
 const http = require('http');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
-const chalk = require('chalk');
 
 const app = express();
 const config = require('@config');
 const { session, options } = require('@config/session');
 
 mongoose.connect(config.database.uri, config.database.options).catch((err) => {
-  console.log(chalk.red(`❌ Database Connection Error: ${err}`));
+  console.log(`❌ Database Connection Error: ${err}`);
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
