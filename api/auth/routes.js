@@ -50,6 +50,8 @@ router.post('/logout', tokenMiddleware, async (req, res) => {
   try {
     await services.auth.logout(req.session.token);
 
+    req.session.destroy();
+
     return res.status(200).json({
       status: res.statusCode,
       message: 'Successfully logged out!',
