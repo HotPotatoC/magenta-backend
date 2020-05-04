@@ -21,13 +21,13 @@ router.get('/:id/comments', tokenMiddleware, async (req, res) => {
 });
 
 router.post('/:id/comments', tokenMiddleware, async (req, res) => {
-  try {
-    const payload = {
-      user_id: req.session.user._id,
-      post_id: req.params.id,
-      body: req.body.body,
-    };
+  const payload = {
+    user_id: req.session.user._id,
+    post_id: req.params.id,
+    body: req.body.body,
+  };
 
+  try {
     await services.comments.createComment(payload);
 
     return res.status(201).json({

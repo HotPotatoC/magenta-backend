@@ -48,8 +48,9 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/logout', tokenMiddleware, async (req, res) => {
+  const token = getBearerToken(req.headers.authorization);
+
   try {
-    const token = getBearerToken(req.headers.authorization);
     await services.auth.logout(token);
 
     req.session.destroy();
@@ -98,8 +99,9 @@ router.post('/register', async (req, res) => {
 });
 
 router.get('/verify', tokenMiddleware, async (req, res) => {
+  const token = getBearerToken(req.headers.authorization);
+
   try {
-    const token = getBearerToken(req.headers.authorization);
     const decoded = await services.auth.checkToken(token);
 
     return res.status(200).json({
