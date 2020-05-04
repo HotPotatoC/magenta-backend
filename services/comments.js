@@ -10,7 +10,7 @@ const Post = require('../models/Post');
 function getCommentsByPostId(postId) {
   return new Promise((resolve, reject) => {
     Comment.find({ post_id: postId }, (err, docs) => {
-      if (err) return reject(err);
+      if (err) return reject({ err, status: 404 });
       return resolve(docs);
     });
   });

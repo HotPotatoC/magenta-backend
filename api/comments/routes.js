@@ -13,9 +13,9 @@ router.get('/:id/comments', tokenMiddleware, async (req, res) => {
       comments,
     });
   } catch (error) {
-    return res.status(500).json({
+    return res.status(404).json({
       status: res.statusCode,
-      message: 'There was a problem on our side.',
+      message: 'No comments in post',
     });
   }
 });
