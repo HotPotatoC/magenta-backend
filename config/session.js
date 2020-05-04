@@ -11,10 +11,11 @@ const redisClient = redis.createClient(
 
 const options = {
   secret: process.env.SESSION_SECRET_KEY,
-  resave: true,
-  saveUninitialized: true,
+  resave: false,
+  saveUninitialized: false,
   store: new RedisStore({
     client: redisClient,
+    ttl: 7200, // 2 hours
   }),
 };
 
