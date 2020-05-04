@@ -31,6 +31,6 @@ function onListening() {
   console.log(`Server Has Started on ${bind}`);
 }
 
-server.listen(process.env.PORT);
+server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
