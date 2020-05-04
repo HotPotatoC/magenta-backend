@@ -31,9 +31,7 @@ function validationErrorResponseMaker(res, error) {
 }
 
 function getBearerToken(authorization) {
-  const token = authorization.split(' ')[1];
-
-  return token;
+  return authorization.split(' ')[1];
 }
 
 module.exports = {
