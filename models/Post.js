@@ -10,6 +10,7 @@ const schema = new mongoose.Schema(
     body: {
       type: String,
       required: [true, 'Cannot be blank'],
+      max: 500,
     },
     likes: {
       type: Number,

@@ -1,4 +1,5 @@
 const Post = require('../models/Post');
+const { validatePost } = require('../validation/post');
 
 /**
  * Get all posts in the posts collection
@@ -75,12 +76,18 @@ function searchPost(query) {
  * @param {Object} payload - Data
  */
 function createPost(payload) {
-  const post = new Post({
-    user_id: payload.user_id,
-    body: payload.body,
-  });
-
   return new Promise((resolve, reject) => {
+    const validation = validatePost({ body: payload.body });
+
+    if (validation.error) {
+      return reject({ err: validation.error, status: 422 });
+    }
+
+    const post = new Post({
+      user_id: payload.user_id,
+      body: payload.body,
+    });
+
     post.save((err, product) => {
       if (err) return reject(err);
       return resolve(product);
@@ -97,6 +104,12 @@ function createPost(payload) {
  */
 function updatePost(id, payload) {
   return new Promise((resolve, reject) => {
+    const validation = validatePost(payload);
+
+    if (validation.error) {
+      return reject({ err: validation.error, status: 422 });
+    }
+
     Post.findOneAndUpdate(
       { _id: id },
       { body: payload.body },
