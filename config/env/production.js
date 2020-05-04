@@ -9,7 +9,8 @@ module.exports = {
     },
   },
   redis: {
-    unix_socket: process.env.REDISCLOUD_URL,
+    port: process.env.REDISCLOUD_PORT,
+    host: process.env.REDISCLOUD_HOST,
     options: {
       no_ready_check: true,
       password: process.env.REDISCLOUD_PASS,
