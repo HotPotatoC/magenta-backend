@@ -7,6 +7,7 @@ const tokenMiddleware = require('../../middlewares/tokenMiddleware');
 const {
   joiErrorResponseMaker,
   validationErrorResponseMaker,
+  getBearerToken,
 } = require('../helpers');
 
 router.post('/login', async (req, res) => {
@@ -48,7 +49,8 @@ router.post('/login', async (req, res) => {
 
 router.post('/logout', tokenMiddleware, async (req, res) => {
   try {
-    await services.auth.logout(req.session.token);
+    const token = getBearerToken(req.headers.authorization);
+    await services.auth.logout(token);
 
     req.session.destroy();
 
@@ -97,7 +99,8 @@ router.post('/register', async (req, res) => {
 
 router.get('/verify', tokenMiddleware, async (req, res) => {
   try {
-    const decoded = await services.auth.checkToken(req.session.token);
+    const token = getBearerToken(req.headers.authorization);
+    const decoded = await services.auth.checkToken(token);
 
     return res.status(200).json({
       status: res.statusCode,
