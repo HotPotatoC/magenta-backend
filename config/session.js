@@ -21,4 +21,5 @@ const options = {
 module.exports = {
   session,
   options,
+  client: redisClient,
 };
