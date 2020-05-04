@@ -54,44 +54,6 @@ function login(email, password) {
 }
 
 /**
- * Invalidates the given token by inserting the token
- * into the token blacklist collection
- *
- * @param {string} token - Valid JWT Token
- */
-function logout(token) {
-  return new Promise((resolve, reject) => {
-    // Verifies the token
-    jwt.verify(token, process.env.ACCESS_TOKEN_KEY, (err, decoded) => {
-      if (err) return reject({ err, status: 500 });
-
-      // Check whether the token is already invalid or exists
-      // in the token blacklist collection
-      InvalidToken.findOne({ token }, (_err, res) => {
-        if (_err) return reject({ err: _err, status: 500 });
-
-        // If the token exists, stop the operation and return a 401 error
-        if (res) {
-          return reject({ status: 401 });
-        }
-
-        // Create a new invalid token document instance
-        const invalidToken = new InvalidToken({
-          user_id: decoded.userId,
-          token,
-        });
-
-        // Saves the token into the collection
-        invalidToken.save((__err, product) => {
-          if (__err) return reject({ err: __err, status: 500 });
-          return resolve({ product, status: 200 });
-        });
-      });
-    });
-  });
-}
-
-/**
  * Determines whether the given token is valid or not
  *
  * @param {string} token - Valid JWT Token
@@ -102,6 +64,44 @@ function checkToken(token) {
       if (err) return reject(err);
       return resolve(decoded);
     });
+  });
+}
+
+/**
+ * Invalidates the given token by inserting the token
+ * into the token blacklist collection
+ *
+ * @param {string} token - Valid JWT Token
+ */
+function logout(token) {
+  return new Promise((resolve, reject) => {
+    // Verifies the token
+    checkToken(token)
+      .then((decoded) => {
+        // Check whether the token is already invalid or exists
+        // in the token blacklist collection
+        InvalidToken.findOne({ token }, (_err, res) => {
+          if (_err) return reject({ err: _err, status: 500 });
+
+          // If the token exists, stop the operation and return a 401 error
+          if (res) {
+            return reject({ status: 401 });
+          }
+
+          // Create a new invalid token document instance
+          const invalidToken = new InvalidToken({
+            user_id: decoded.userId,
+            token,
+          });
+
+          // Saves the token into the collection
+          invalidToken.save((__err, product) => {
+            if (__err) return reject({ err: __err, status: 500 });
+            return resolve({ product, status: 200 });
+          });
+        });
+      })
+      .catch((err) => reject({ err, status: 500 }));
   });
 }
 
