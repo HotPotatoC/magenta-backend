@@ -22,7 +22,7 @@ router.get('/:id/comments', tokenMiddleware, async (req, res) => {
 
 router.post('/:id/comments', tokenMiddleware, async (req, res) => {
   try {
-    const { userId } = await services.auth.checkToken(res.locals.token);
+    const { userId } = await services.auth.checkToken(req.session.token);
 
     const payload = {
       user_id: userId,

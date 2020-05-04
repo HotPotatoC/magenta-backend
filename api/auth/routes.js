@@ -48,7 +48,7 @@ router.post('/login', async (req, res) => {
 
 router.post('/logout', tokenMiddleware, async (req, res) => {
   try {
-    await services.auth.logout(res.locals.token);
+    await services.auth.logout(req.session.token);
 
     return res.status(200).json({
       status: res.statusCode,
@@ -95,7 +95,7 @@ router.post('/register', async (req, res) => {
 
 router.get('/verify', tokenMiddleware, async (req, res) => {
   try {
-    const decoded = await services.auth.checkToken(res.locals.token);
+    const decoded = await services.auth.checkToken(req.session.token);
 
     return res.status(200).json({
       status: res.statusCode,
