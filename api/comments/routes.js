@@ -2,8 +2,6 @@ const router = require('express').Router();
 const tokenMiddleware = require('../../middlewares/tokenMiddleware');
 const services = require('../../services');
 
-const { getBearerToken } = require('../helpers');
-
 router.get('/:id/comments', tokenMiddleware, async (req, res) => {
   const postId = req.params.id;
 
@@ -24,11 +22,8 @@ router.get('/:id/comments', tokenMiddleware, async (req, res) => {
 
 router.post('/:id/comments', tokenMiddleware, async (req, res) => {
   try {
-    const token = getBearerToken(req.headers.authorization);
-    const { userId } = await services.auth.checkToken(token);
-
     const payload = {
-      user_id: userId,
+      user_id: req.session.user._id,
       post_id: req.params.id,
       body: req.body.body,
     };
