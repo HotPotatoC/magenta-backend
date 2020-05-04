@@ -36,7 +36,7 @@ function login(email, password) {
         // If the given password is invalid, stop the operation and return a 401 error
         if (!same) return reject({ err: _err, status: 401 });
 
-        // Maked a token with userId, username, and email as the payload
+        // Makes a token with userId, username, and email as the payload
         const token = jwt.sign(
           { userId: user._id, username: user.username, email: user.email },
           process.env.ACCESS_TOKEN_KEY,
