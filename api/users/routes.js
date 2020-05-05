@@ -4,30 +4,12 @@ const services = require('../../services');
 
 router.get('/', tokenMiddleware, async (req, res) => {
   try {
-    const docs = await services.users.getUsers();
+    const users = await services.users.getUsers();
 
-    const response = docs.map((doc) => ({
-      ...doc.toObject(),
-      links: [
-        {
-          rel: 'user',
-          href: `/users/${doc.username}`,
-          action: 'GET',
-        },
-        {
-          rel: 'user',
-          href: `/users/${doc.username}`,
-          action: 'PUT',
-        },
-        {
-          rel: 'user',
-          href: `/users/${doc.username}`,
-          action: 'DELETE',
-        },
-      ],
-    }));
-
-    return res.status(200).json(response);
+    return res.status(200).json({
+      status: res.statusCode,
+      users,
+    });
   } catch (error) {
     return res.status(500).json({
       status: res.statusCode,
@@ -40,30 +22,12 @@ router.get('/:username', tokenMiddleware, async (req, res) => {
   const { username } = req.params;
 
   try {
-    const doc = await services.users.getUserByUsername(username);
+    const user = await services.users.getUserByUsername(username);
 
-    const response = {
-      ...doc.toObject(),
-      links: [
-        {
-          rel: 'user',
-          href: `/users/${doc.username}`,
-          action: 'GET',
-        },
-        {
-          rel: 'user',
-          href: `/users/${doc.username}`,
-          action: 'PUT',
-        },
-        {
-          rel: 'user',
-          href: `/users/${doc.username}`,
-          action: 'DELETE',
-        },
-      ],
-    };
-
-    return res.status(200).json(response);
+    return res.status(200).json({
+      status: res.statusCode,
+      user,
+    });
   } catch (error) {
     res.status(500).json({
       status: res.statusCode,
