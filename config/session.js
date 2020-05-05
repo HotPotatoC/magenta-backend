@@ -12,9 +12,7 @@ const options = {
   saveUninitialized: false,
   store: new RedisStore({
     client: redisClient,
-    port: config.redis.port,
-    host: config.redis.host,
-    ttl: 7200, // 2 hours
+    ...config.redis,
   }),
 };
 

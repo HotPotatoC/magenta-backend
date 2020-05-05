@@ -11,9 +11,7 @@ module.exports = {
   redis: {
     port: process.env.REDISCLOUD_PORT,
     host: process.env.REDISCLOUD_HOST,
-    options: {
-      no_ready_check: true,
-      password: process.env.REDISCLOUD_PASS,
-    },
+    pass: process.env.REDISCLOUD_PASS,
+    ttl: 7200,
   },
 };
