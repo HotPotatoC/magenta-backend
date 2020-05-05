@@ -33,7 +33,6 @@ module.exports = (req, res, next) => {
           });
         }
 
-        res.locals.token = token;
         next();
       });
     });

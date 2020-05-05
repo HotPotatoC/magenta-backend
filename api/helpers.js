@@ -30,7 +30,12 @@ function validationErrorResponseMaker(res, error) {
   return null;
 }
 
+function getBearerToken(authorization) {
+  return authorization.split(' ')[1];
+}
+
 module.exports = {
   joiErrorResponseMaker,
   validationErrorResponseMaker,
+  getBearerToken,
 };

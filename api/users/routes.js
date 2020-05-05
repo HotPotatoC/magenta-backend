@@ -37,8 +37,9 @@ router.get('/', tokenMiddleware, async (req, res) => {
 });
 
 router.get('/:username', tokenMiddleware, async (req, res) => {
+  const { username } = req.params;
+
   try {
-    const { username } = req.params;
     const doc = await services.users.getUserByUsername(username);
 
     const response = {
@@ -98,6 +99,7 @@ router.put('/:username', tokenMiddleware, async (req, res) => {
 
 router.delete('/:username', tokenMiddleware, async (req, res) => {
   const { username } = req.params;
+
   try {
     const result = await services.users.deleteUserByUsername(username);
 

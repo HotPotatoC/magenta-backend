@@ -2,6 +2,8 @@ const router = require('express').Router();
 const tokenMiddleware = require('../../middlewares/tokenMiddleware');
 const services = require('../../services');
 
+const { joiErrorResponseMaker } = require('../helpers');
+
 router.get('/', async (req, res) => {
   try {
     const posts = await services.posts.getAllPosts(req.query);
@@ -80,9 +82,13 @@ router.post('/', tokenMiddleware, async (req, res) => {
       message: 'Successfully inserted a new post to the collection',
     });
   } catch (error) {
-    return res.status(400).json({
+    if (error.status === 422) {
+      return joiErrorResponseMaker(res, error.err);
+    }
+
+    return res.status(500).json({
       status: res.statusCode,
-      message: error.message,
+      message: 'There was a problem on our side.',
     });
   }
 });
@@ -99,9 +105,13 @@ router.put('/:id', tokenMiddleware, async (req, res) => {
       message: 'Successfully updated post',
     });
   } catch (error) {
-    return res.status(400).json({
+    if (error.status === 422) {
+      return joiErrorResponseMaker(res, error.err);
+    }
+
+    return res.status(500).json({
       status: res.statusCode,
-      message: error.message,
+      message: 'There was a problem on our side.',
     });
   }
 });

@@ -13,23 +13,21 @@ router.get('/:id/comments', tokenMiddleware, async (req, res) => {
       comments,
     });
   } catch (error) {
-    return res.status(500).json({
+    return res.status(404).json({
       status: res.statusCode,
-      message: 'There was a problem on our side.',
+      message: 'No comments in post',
     });
   }
 });
 
 router.post('/:id/comments', tokenMiddleware, async (req, res) => {
+  const payload = {
+    user_id: req.session.user._id,
+    post_id: req.params.id,
+    body: req.body.body,
+  };
+
   try {
-    const { userId } = await services.auth.checkToken(res.locals.token);
-
-    const payload = {
-      user_id: userId,
-      post_id: req.params.id,
-      body: req.body.body,
-    };
-
     await services.comments.createComment(payload);
 
     return res.status(201).json({
