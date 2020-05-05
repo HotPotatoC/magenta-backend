@@ -49,13 +49,13 @@ if (app.get('env') === 'development') {
       error: err,
     });
   });
-}
-
-app.use((err, req, res, next) => {
-  res.status(err.status || 500).json({
-    status: err.status || 500,
-    message: 'There was a problem on our side.',
+} else {
+  app.use((err, req, res, next) => {
+    res.status(err.status || 500).json({
+      status: err.status || 500,
+      message: 'There was a problem on our side.',
+    });
   });
-});
+}
 
 module.exports = http.createServer(app);
