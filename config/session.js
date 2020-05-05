@@ -16,7 +16,7 @@ const options = {
   }),
 };
 
-console.log(config);
+console.log(options);
 
 module.exports = {
   session,
