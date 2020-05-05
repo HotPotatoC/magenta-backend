@@ -1,6 +1,6 @@
 module.exports = {
   database: {
-    uri: process.env.MONGOLAB_URI,
+    uri: process.env.MONGODB_URI,
     options: {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -8,10 +8,14 @@ module.exports = {
       dbName: process.env.MONGODB_NAME,
     },
   },
-  redis: {
-    port: process.env.REDISCLOUD_PORT,
-    host: process.env.REDISCLOUD_HOST,
-    pass: process.env.REDISCLOUD_PASS,
+  redisClient: {
+    unix_socket: process.env.REDISCLOUD_URL,
+    options: {
+      no_ready_check: true,
+      password: process.env.REDISCLOUD_PASS
+    }
+  },
+  redisStore: {
     ttl: 7200,
   },
 };
