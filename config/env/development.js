@@ -11,8 +11,6 @@ module.exports = {
   redis: {
     port: 6379,
     host: 'localhost',
-    options: {
-      no_ready_check: true,
-    },
+    ttl: 7200,
   },
 };

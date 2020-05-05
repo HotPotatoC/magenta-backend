@@ -10,7 +10,7 @@ const defaults = {
     },
   },
 };
-console.log(production);
+
 module.exports = {
   development: { ...development, ...defaults },
   production: { ...production, ...defaults },
