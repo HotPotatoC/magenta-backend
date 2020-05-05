@@ -10,7 +10,7 @@ const defaults = {
     },
   },
 };
-
+console.log(`CURRENT ENVIRONMENT: ${process.env.NODE_ENV}`);
 module.exports = {
   development: { ...development, ...defaults },
   production: { ...production, ...defaults },
