@@ -4,7 +4,10 @@ const RedisStore = require('connect-redis')(session);
 
 const config = require('.');
 
-const redisClient = redis.createClient();
+const redisClient = redis.createClient(
+  config.redisClient.unix_socket,
+  config.redisClient.options
+);
 
 const options = {
   secret: process.env.SESSION_SECRET_KEY,
@@ -12,11 +15,9 @@ const options = {
   saveUninitialized: false,
   store: new RedisStore({
     client: redisClient,
-    ...config.redis,
+    ...config.redisStore,
   }),
 };
-
-console.log(options);
 
 module.exports = {
   session,

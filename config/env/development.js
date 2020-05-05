@@ -8,9 +8,13 @@ module.exports = {
       dbName: process.env.MONGODB_NAME,
     },
   },
-  redis: {
-    port: 6379,
-    host: 'localhost',
+  redisClient: {
+    unix_socket: process.env.REDISCLOUD_URL,
+    options: {
+      no_ready_check: true,
+    }
+  },
+  redisStore: {
     ttl: 7200,
   },
 };
