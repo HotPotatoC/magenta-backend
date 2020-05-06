@@ -8,7 +8,7 @@ const limiter = new RateLimit({
     expiry: 5 * 60, // 5 minutes
   }),
   windowMs: 5 * 60 * 1000, // 5 minutes
-  max: 50,
+  max: 100,
   message: {
     status: 429,
     message: 'Too many requests, please try again later',
