@@ -8,8 +8,8 @@ const morgan = require('morgan');
 
 const app = express();
 const config = require('.');
-const rateLimiter = require('../middlewares/rateLimiter');
 const { session, options } = require('./session');
+const rateLimiter = require('../middlewares/rateLimiter');
 
 mongoose.connect(config.database.uri, config.database.options).catch((err) => {
   console.log(`❌ Database Connection Error: ${err}`);
