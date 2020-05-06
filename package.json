@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "engines": {
+    "node": "13.7.0"
+  },
   "scripts": {
     "start": "node ./bin/start-server",
     "dev": "./node_modules/.bin/nodemon ./bin/start-server",
