@@ -8,6 +8,7 @@ const morgan = require('morgan');
 
 const app = express();
 const config = require('.');
+const limiter = require('./limiter');
 const { session, options } = require('./session');
 
 mongoose.connect(config.database.uri, config.database.options).catch((err) => {
@@ -18,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(compression());
 app.use(cors());
+app.use(limiter);
 app.use(session(options));
 
 if (app.get('env') === 'development') {
