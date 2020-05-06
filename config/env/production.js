@@ -12,8 +12,8 @@ module.exports = {
     unix_socket: process.env.REDISCLOUD_URL,
     options: {
       no_ready_check: true,
-      password: process.env.REDISCLOUD_PASS
-    }
+      password: process.env.REDISCLOUD_PASS,
+    },
   },
   redisStore: {
     ttl: 7200,
