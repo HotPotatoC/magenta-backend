@@ -8,32 +8,31 @@ const morgan = require('morgan');
 
 const app = express();
 const config = require('.');
-const limiter = require('./limiter');
 const { session, options } = require('./session');
+const rateLimiter = require('../middlewares/rateLimiter');
 
 mongoose.connect(config.database.uri, config.database.options).catch((err) => {
   console.log(`❌ Database Connection Error: ${err}`);
 });
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(compression());
 app.use(cors());
-app.use(limiter);
+app.use(rateLimiter);
+app.use(compression());
 app.use(session(options));
-
-if (app.get('env') === 'development') {
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+if (app.get('env') !== 'production') {
   app.use(morgan('dev'));
 }
 
 // Mount Routes
 app.use('/auth', require('../api/auth/routes'));
+app.use('/users', require('../api/users/routes'));
 app.use(
   '/posts',
   require('../api/posts/routes'),
   require('../api/comments/routes')
 );
-app.use('/users', require('../api/users/routes'));
 
 app.get('/status', (req, res) => {
   res.json({
@@ -43,7 +42,7 @@ app.get('/status', (req, res) => {
 });
 
 /* eslint-disable no-unused-vars */
-if (app.get('env') === 'development') {
+if (app.get('env') !== 'production') {
   app.use((err, req, res, next) => {
     res.status(err.status || 500).json({
       status: err.status || 500,

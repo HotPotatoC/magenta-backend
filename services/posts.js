@@ -11,7 +11,9 @@ const { validatePost } = require('../validation/post');
 function getAllPosts(filter = null) {
   return new Promise((resolve, reject) => {
     // Get all posts and comments by default
-    let query = Post.find({}).populate('comments');
+    let query = Post.find({})
+      .populate('comments')
+      .populate('user', ['active', 'img_url', 'bio', 'username', 'email']);
 
     // Get all posts without comments
     if (filter.noComments && filter.noComments === '1') {
@@ -45,6 +47,7 @@ function getSinglePost(id) {
   return new Promise((resolve, reject) => {
     Post.findById(id)
       .populate('comments')
+      .populate('user', ['active', 'img_url', 'bio', 'username', 'email'])
       .exec((err, res) => {
         if (err) return reject(err);
         return resolve(res);
@@ -63,6 +66,7 @@ function searchPost(query) {
   return new Promise((resolve, reject) => {
     Post.find({ body: search })
       .populate('comments')
+      .populate('user', ['active', 'img_url', 'bio', 'username', 'email'])
       .exec((err, res) => {
         if (err) return reject(err);
         return resolve(res);
@@ -74,6 +78,8 @@ function searchPost(query) {
  * Creates a new post
  *
  * @param {Object} payload - Data
+ * @param {string} payload.user - User's id
+ * @param {string} payload.body - The post's content
  */
 function createPost(payload) {
   return new Promise((resolve, reject) => {
@@ -84,7 +90,7 @@ function createPost(payload) {
     }
 
     const post = new Post({
-      user_id: payload.user_id,
+      user: payload.user,
       body: payload.body,
     });
 
