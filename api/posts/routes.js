@@ -70,8 +70,8 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', tokenMiddleware, async (req, res) => {
   const payload = {
-    user_id: req.session.user._id,
-    ...req.body,
+    user: req.session.user._id,
+    body: req.body.body,
   };
 
   try {

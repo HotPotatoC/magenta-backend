@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema(
   {
-    user_id: {
+    user: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'User',
       required: [true, 'Cannot be blank'],
