@@ -47,6 +47,7 @@ function getSinglePost(id) {
   return new Promise((resolve, reject) => {
     Post.findById(id)
       .populate('comments')
+      .populate('user', ['active', 'img_url', 'bio', 'username', 'email'])
       .exec((err, res) => {
         if (err) return reject(err);
         return resolve(res);
@@ -65,6 +66,7 @@ function searchPost(query) {
   return new Promise((resolve, reject) => {
     Post.find({ body: search })
       .populate('comments')
+      .populate('user', ['active', 'img_url', 'bio', 'username', 'email'])
       .exec((err, res) => {
         if (err) return reject(err);
         return resolve(res);
