@@ -74,6 +74,8 @@ function searchPost(query) {
  * Creates a new post
  *
  * @param {Object} payload - Data
+ * @param {string} payload.user_id - User's id
+ * @param {string} payload.body - The post's content
  */
 function createPost(payload) {
   return new Promise((resolve, reject) => {
