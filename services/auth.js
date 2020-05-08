@@ -38,7 +38,14 @@ function login(email, password) {
 
         // Makes a token with userId, username, and email as the payload
         const token = jwt.sign(
-          { userId: user._id, username: user.username, email: user.email },
+          {
+            userId: user._id,
+            username: user.username,
+            email: user.email,
+            img_url: user.img_url,
+            bio: user.bio,
+            active: user.active,
+          },
           process.env.ACCESS_TOKEN_KEY,
           config.jwt.options
         );
