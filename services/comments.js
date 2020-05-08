@@ -9,10 +9,12 @@ const Post = require('../models/Post');
  */
 function getCommentsByPostId(postId) {
   return new Promise((resolve, reject) => {
-    Comment.find({ post_id: postId }, (err, docs) => {
-      if (err) return reject({ err, status: 404 });
-      return resolve(docs);
-    });
+    Comment.find({ post_id: postId })
+      .populate('user', ['active', 'img_url', 'bio', 'username', 'email'])
+      .exec((err, docs) => {
+        if (err) return reject({ err, status: 404 });
+        return resolve(docs);
+      });
   });
 }
 
@@ -21,14 +23,14 @@ function getCommentsByPostId(postId) {
  * add the comment id into the post
  *
  * @param {Object} payload
- * @param {string} payload.user_id
+ * @param {string} payload.user
  * @param {string} payload.post_id
  * @param {string} payload.body
  */
 function createComment(payload) {
   // Create a new comment document instance
   const comment = new Comment({
-    user_id: payload.user_id,
+    user: payload.user,
     post_id: payload.post_id,
     body: payload.body,
   });
