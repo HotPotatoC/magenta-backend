@@ -12,7 +12,15 @@ function getAllPosts(filter = null) {
   return new Promise((resolve, reject) => {
     // Get all posts and comments by default
     let query = Post.find({})
-      .populate('comments')
+      .populate({
+        path: 'comments',
+        populate: {
+          path: 'user',
+        },
+        options: {
+          sort: [{ createdAt: -1 }],
+        },
+      })
       .populate('user', ['active', 'img_url', 'bio', 'username', 'email']);
 
     // Get all posts without comments
@@ -46,7 +54,12 @@ function getAllPosts(filter = null) {
 function getSinglePost(id) {
   return new Promise((resolve, reject) => {
     Post.findById(id)
-      .populate('comments')
+      .populate({
+        path: 'comments',
+        populate: {
+          path: 'user',
+        },
+      })
       .populate('user', ['active', 'img_url', 'bio', 'username', 'email'])
       .exec((err, res) => {
         if (err) return reject(err);
@@ -65,7 +78,12 @@ function searchPost(query) {
 
   return new Promise((resolve, reject) => {
     Post.find({ body: search })
-      .populate('comments')
+      .populate({
+        path: 'comments',
+        populate: {
+          path: 'user',
+        },
+      })
       .populate('user', ['active', 'img_url', 'bio', 'username', 'email'])
       .exec((err, res) => {
         if (err) return reject(err);

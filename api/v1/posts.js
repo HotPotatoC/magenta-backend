@@ -2,7 +2,7 @@ const router = require('express').Router();
 const tokenMiddleware = require('../../middlewares/tokenMiddleware');
 const services = require('../../services');
 
-const { joiErrorResponseMaker } = require('../helpers');
+const { joiErrorResponseMaker, getBearerToken } = require('../helpers');
 
 router.get('/', async (req, res) => {
   try {
@@ -69,8 +69,12 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', tokenMiddleware, async (req, res) => {
+  const token = getBearerToken(req.headers.authorization);
+
+  const decoded = await services.auth.checkToken(token);
+
   const payload = {
-    user: req.session.user._id,
+    user: decoded.userId,
     body: req.body.body,
   };
 
