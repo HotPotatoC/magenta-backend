@@ -108,11 +108,7 @@ router.get('/verify', tokenMiddleware, async (req, res) => {
       status: res.statusCode,
       valid: true,
       message: 'Token still valid',
-      payload: {
-        userId: decoded.userId,
-        username: decoded.username,
-        email: decoded.email,
-      },
+      payload: decoded,
     });
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
