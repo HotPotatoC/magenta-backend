@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 const User = require('../models/User');
+const Post = require('../models/Post');
 const { validateRegister } = require('../validation/auth');
 
 const projection = {
@@ -44,7 +45,70 @@ function getUserByUsername(username) {
   return new Promise((resolve, reject) => {
     User.findOne({ username }, projection, (err, doc) => {
       if (err) return reject({ err, status: 500 });
+      if (!doc) return reject({ status: 404 });
       return resolve(doc);
+    });
+  });
+}
+
+/**
+ * Get user's posts
+ *
+ * @param {string} username - User's username
+ */
+function getUserPosts(username) {
+  return new Promise((resolve, reject) => {
+    User.findOne({ username }).exec((err, user) => {
+      if (err) return reject({ err, status: 500 });
+      if (!user) return reject({ status: 404 });
+
+      const query = Post.find({ user: user._id })
+        .populate({
+          path: 'comments',
+          populate: {
+            path: 'user',
+            select: ['active', 'img_url', 'bio', 'username', 'email'],
+          },
+        })
+        .populate('user', ['active', 'img_url', 'bio', 'username', 'email']);
+
+      query.exec((_err, doc) => {
+        if (_err) return reject({ err: _err, status: 500 });
+        return resolve(doc);
+      });
+    });
+  });
+}
+
+/**
+ * Get user's posts
+ *
+ * @param {string} username - User's username
+ * @param {string} postId - Post's id
+ */
+function getUserPostById(username, postId) {
+  return new Promise((resolve, reject) => {
+    User.findOne({ username }).exec((err, user) => {
+      if (err) return reject({ err, status: 500 });
+      if (!user) return reject({ collection: 'user', status: 404 });
+
+      const query = Post.findOne({
+        _id: postId,
+        user: user._id,
+      })
+        .populate({
+          path: 'comments',
+          populate: {
+            path: 'user',
+            select: ['active', 'img_url', 'bio', 'username', 'email'],
+          },
+        })
+        .populate('user', ['active', 'img_url', 'bio', 'username', 'email']);
+
+      query.exec((_err, doc) => {
+        if (_err || !doc) return reject({ collection: 'post', status: 404 });
+        return resolve(doc);
+      });
     });
   });
 }
@@ -139,6 +203,8 @@ function deleteUserByUsername(username) {
 module.exports = {
   getUsers,
   getUserByUsername,
+  getUserPosts,
+  getUserPostById,
   registerNewUser,
   updateUserByUsername,
   deleteUserByUsername,

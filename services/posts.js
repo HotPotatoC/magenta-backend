@@ -17,6 +17,7 @@ function getAllPosts(filter = null) {
         path: 'comments',
         populate: {
           path: 'user',
+          select: ['active', 'img_url', 'bio', 'username', 'email'],
         },
         options: {
           sort: [{ createdAt: -1 }],
@@ -59,6 +60,7 @@ function getSinglePost(id) {
         path: 'comments',
         populate: {
           path: 'user',
+          select: ['active', 'img_url', 'bio', 'username', 'email'],
         },
       })
       .populate('user', ['active', 'img_url', 'bio', 'username', 'email'])
@@ -83,6 +85,7 @@ function searchPost(query) {
         path: 'comments',
         populate: {
           path: 'user',
+          select: ['active', 'img_url', 'bio', 'username', 'email'],
         },
       })
       .populate('user', ['active', 'img_url', 'bio', 'username', 'email'])

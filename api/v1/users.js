@@ -29,7 +29,66 @@ router.get('/:username', tokenMiddleware, async (req, res) => {
       user,
     });
   } catch (error) {
-    res.status(500).json({
+    if (error.status === 404) {
+      return res.status(404).json({
+        status: res.statusCode,
+        message: `No user with name '${username}'.`,
+      });
+    }
+    return res.status(500).json({
+      status: res.statusCode,
+      message: 'There was a problem on our side.',
+    });
+  }
+});
+
+router.get('/:username/posts', async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    const posts = await services.users.getUserPosts(username);
+
+    return res.status(200).json({
+      status: res.statusCode,
+      posts,
+    });
+  } catch (error) {
+    if (error.status === 404) {
+      return res.status(404).json({
+        status: res.statusCode,
+        message: `No user with name '${username}'.`,
+      });
+    }
+    return res.status(500).json({
+      status: res.statusCode,
+      message: 'There was a problem on our side.',
+    });
+  }
+});
+
+router.get('/:username/posts/:id', async (req, res) => {
+  const { username, id } = req.params;
+
+  try {
+    const post = await services.users.getUserPostById(username, id);
+
+    return res.status(200).json({
+      status: res.statusCode,
+      post,
+    });
+  } catch (error) {
+    if (error.status === 404) {
+      const message =
+        error.collection === 'user'
+          ? `No user with name '${username}'.`
+          : `Post does not exists`;
+      return res.status(404).json({
+        status: res.statusCode,
+        message,
+      });
+    }
+    console.log(error);
+    return res.status(500).json({
       status: res.statusCode,
       message: 'There was a problem on our side.',
     });
