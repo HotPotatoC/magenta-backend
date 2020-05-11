@@ -4,13 +4,14 @@ const services = require('../../services');
 
 router.get('/', tokenMiddleware, async (req, res) => {
   try {
-    const users = await services.users.getUsers();
+    const users = await services.users.getUsers(req.query);
 
     return res.status(200).json({
       status: res.statusCode,
       users,
     });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({
       status: res.statusCode,
       message: 'There was a problem on our side.',

@@ -29,6 +29,12 @@ const schema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    posts: [
+      {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'Post',
+      },
+    ],
     img_url: {
       type: String,
       default: '',

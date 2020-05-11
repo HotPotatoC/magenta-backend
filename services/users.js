@@ -11,9 +11,24 @@ const projection = {
 /**
  * Get all users in the users collection
  */
-function getUsers() {
+function getUsers(filter = null) {
   return new Promise((resolve, reject) => {
-    User.find({}, projection, (err, docs) => {
+    let query = User.find({}, projection);
+
+    if (filter && filter.verbose === '1') {
+      query = query.populate({
+        path: 'posts',
+        populate: {
+          path: 'comments',
+        },
+        select: ['likes', 'body', 'createdAt', 'updatedAt'],
+        options: {
+          sort: [{ createdAt: -1 }],
+        },
+      });
+    }
+
+    query.exec((err, docs) => {
       if (err) return reject({ err, status: 500 });
       return resolve(docs);
     });

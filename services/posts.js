@@ -1,4 +1,5 @@
 const Post = require('../models/Post');
+const User = require('../models/User');
 const { validatePost } = require('../validation/post');
 
 /**
@@ -113,8 +114,18 @@ function createPost(payload) {
     });
 
     post.save((err, product) => {
-      if (err) return reject(err);
-      return resolve(product);
+      if (err) {
+        reject(err);
+      } else {
+        User.updateOne(
+          { _id: payload.user },
+          { $push: { posts: product } },
+          (_err) => {
+            if (_err) return reject(_err);
+            return resolve(product);
+          }
+        );
+      }
     });
   });
 }
