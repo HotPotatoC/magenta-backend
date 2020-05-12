@@ -8,7 +8,6 @@ const morgan = require('morgan');
 
 const app = express();
 const config = require('.');
-const { session, options } = require('./session');
 const rateLimiter = require('../middlewares/rateLimiter');
 
 mongoose.connect(config.database.uri, config.database.options).catch((err) => {
@@ -18,7 +17,6 @@ mongoose.connect(config.database.uri, config.database.options).catch((err) => {
 app.use(cors());
 app.use(rateLimiter);
 app.use(compression());
-app.use(session(options));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 if (app.get('env') !== 'production') {
