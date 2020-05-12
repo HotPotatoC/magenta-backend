@@ -4,6 +4,10 @@ const server = require('../config/server');
 
 const port = process.env.PORT;
 
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
 function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;
@@ -30,7 +34,3 @@ function onListening() {
   const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
   console.log(`Server Has Started on ${bind}`);
 }
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
