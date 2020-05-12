@@ -24,9 +24,13 @@ if (app.get('env') !== 'production') {
 }
 
 // Mount Routes
-app.use('/v1/auth', require('../api/v1/auth'));
-app.use('/v1/users', require('../api/v1/users'));
-app.use('/v1/posts', require('../api/v1/posts'), require('../api/v1/comments'));
+app.use('/v1/auth', require('../routes/v1/auth'));
+app.use('/v1/users', require('../routes/v1/users'));
+app.use(
+  '/v1/posts',
+  require('../routes/v1/posts'),
+  require('../routes/v1/comments')
+);
 
 app.get('/status', (req, res) => {
   res.json({
